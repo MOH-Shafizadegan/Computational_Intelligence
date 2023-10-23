@@ -1,0 +1,346 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[top=1in, right=0.75in, left=0.75in]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=MATLAB,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,	                   % adds a frame around the code
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	rulecolor=\color{black},
+	breakatwhitespace=true,
+	tabsize=3,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=10pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{customgray}, % the style that is used for the line-numbers
+}
+
+\author{
+	Mohammad Hossein Shafizadegan\\
+	99104781
+}
+\title{
+	Assignment 1 \\
+	Computational Intelligence  \\
+	Dr. S. Hajipour
+}
+
+\pagestyle{fancy}
+\rhead{CI}
+\lhead{Assignment 1}
+
+\newcommand{\pict}[2]{\begin{center}
+		\includegraphics[width=#1\linewidth]{Fig/#2.png}
+\end{center}}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\deter}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=MATLAB,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,	                   % adds a frame around the code
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	rulecolor=\color{black},
+	breakatwhitespace=true,
+	tabsize=3,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=10pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{customgray}, % the style that is used for the line-numbers
+}
+
+\begin{document}
+	\begin{figure}
+		\includegraphics[width=0.25\textwidth]{Fig/Sharif.png}
+		\centering
+	\end{figure}
+	\maketitle
+	\tableofcontents
+	\newpage
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 1}
+	\subsection*{a}
+	We can define each pixel of the input image as an input for our neural network. Therefor, the total number of input neurons for our network equals \textbf{100}.
+	\subsection*{b}
+	The number of valid classes that can be assigned as output is \textbf{10} (as for each number from 0 to 9).\\
+	If we code the outputs using one-hot encoding, we will need \textbf{10 neurons} for output (for each output class only one neuron has output value of 1).\\
+	It is also possible to use simple binary coding for output classes using 4 bits. In this case we only need \textbf{4 output neurons}.
+	\subsection*{c}
+	The number and size of hidden layers depend on the complexity and non-linearity of the problem. We note that if the number of samples and test data are relatively small its not recommended to have several hidden layers since the convergence won't be achieved. The more hidden layer we have, the more complexity we deal with.
+	
+	\subsection*{d}
+	In this case, each output of our neural network is value of a particular pixel. The range of this input value is quite vast from 0 to 255. Normalizing input values can make the optimization process faster and more efficient, by preventing the gradients from becoming too large or too small, and by making the error surface smoother and more symmetric.\\\\
+	There are several ways to normalize the input. One simple way is called the min-max normalization which transforms the input range from 0 to 255 into 0 to 1. This process can be done by dividing the input by its maximum value. \\
+	The other popular method of normalizing is z-score which transfer in a way that the average is equal to 0 and the standard deviation will be 1. This can be achieved by subtracting each data from the average and dividing by the standard deviation.
+	\begin{align*}
+		\text{min-max normalization : } \frac{x}{\max\{x\}} \qquad , \qquad \text{z-score : } \frac{x - \mu}{\sigma}
+	\end{align*}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 2}
+	\subsection*{a}
+	We can use each bit of the input sequence as an input for our neural network hence, we will need \textbf{5 input neurons}. We want to see at the end whether the hamming distance is greater than 2 or not so only \textbf{one output neuron} is enough which produce a binary value indicating the result.
+	
+	\subsection*{b}
+	A linearly separable function is one that can be computed by a single TLU by dividing the input space into two regions with a hyperplane.\\\\
+	Suppose we fix the 4 MSB bits to "1010". Now we have to consider only one bit. To check the hamming distance we have to use and implement the XOR function which is not linearly separable. Since we can not linearly separate our data in this specific dimension, the whole problem can not me separated linearly. We have to use XOR units.
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 3}
+	We first create the karnaugh map for this problem and simplify it as follows : 
+	\pict{0.6}{F1}
+	\begin{flalign*}
+		&y = \overline{x_1} \, x_4 + x_2x_4 + x_1x_3\overline{x_4}&&
+	\end{flalign*} 
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 4}
+	\subsection*{a}
+	\begin{flalign*}
+		&y = \begin{cases}
+			1 \qquad & 2o_1 + 2o_2 \ge 3 \\
+			0 & O.W.
+		\end{cases} \qquad , \qquad o_1 \,\, , \,\, o_2 2\in \{0, 1\} \quad \Rightarrow \quad \text{ if } y=1 \Rightarrow o_1 = o_2 = 1&&\\
+		&\Rightarrow \begin{cases}
+			o_1 = 1 \Rightarrow 2x_2 - 2x_1 \ge -1 \\
+			o_2 = 1 \Rightarrow 2x_1 - 2x_2 \ge -1
+		\end{cases} \quad \Rightarrow \quad \text{ if } x \in (2x_2 - 2x_1 \ge -1) \cap (2x_1 - 2x_2 \ge -1) \Rightarrow y = 1&&
+	\end{flalign*}
+	\pict{0.3}{F2}
+	
+	\subsection*{b}
+	based on the values of weights and thresholds we first create the truth table as follows :
+	\begin{center}
+		\begin{tabular}{c|c||c|c||c}
+			\textbf{$x_1$} & \textbf{$x_2$} & \textbf{$o_1$} & \textbf{$o_2$} & \textbf{$y$} \\
+			\hline
+			0 & 0 & 1 & 1 & 1 \\
+			\hline
+			0 & 1 & 1 & 0 & 0 \\
+			\hline
+			1 & 1 & 1 & 1 & 1 \\
+			\hline
+			1 & 0 & 0 & 1 & 0 \\
+		\end{tabular}
+	\end{center}
+	\begin{flalign*}
+		&\text{Using SOP format} \Rightarrow y=\overline{x_1} \, \overline{x_2} + x_1x_2 &&
+	\end{flalign*}
+	It can be seen that this network implements \textbf{XNOR} logical function
+	
+	\subsection*{c}
+	\begin{flalign*}
+		&z = \begin{cases}
+			1 \qquad & y - x_2 \ge 0 \\
+			0 & O.W.
+		\end{cases} \quad \Rightarrow \quad x_2 \le y&&\\
+		&\text{ if } y = 0 \Rightarrow x_2 \le 0 \qquad , \qquad x \in (2x_2 - 2x_1 < -1) \cup (2x_1 - 2x_2 < -1)&&
+	\end{flalign*}
+	\pict{0.3}{F3}
+	\begin{flalign*}
+		&\text{ if } y = 1 \Rightarrow x_2 \le 1 \qquad , \qquad x \in (2x_2 - 2x_1 \ge -1) \cap (2x_1 - 2x_2 \ge -1)&&
+	\end{flalign*}
+	\pict{0.3}{F4}
+	The final answer is aggregation of the above two answers. 
+	\pict{0.3}{F5}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 6}
+	The following neural network consists of only one TLU therefor, it can separate the input space via a straight line into two sections.
+	\pict{0.4}{F6}
+	The neural network C, first creates two lines. Each one choose a different section of the space. Then each neuron of the hidden layer  defines each of these separate sections and the output layer aggregate them so that the result can be seen as follows
+	\pict{0.4}{F7}
+	In the neural network D, the first neuron in the first layer creates a vertical line since it only receives $x_1$. The second neuron of the first layer creates a horizontal line since it only receives $x_2$ as input. The output layer choose the common space as it can be seen in the result
+	\pict{0.4}{F8}
+	In the neural network E, each input neuron creates a straight line since they receive both inputs. The output neuron then finally choose the common chosen section of all these three lines.
+	\pict{0.4}{F9}
+	In the neural network F, the first neuron of the input layer defines a vertical line as the last neuron of this layer creates a horizontal line since they receive only one input. The middle neuron of this layer can create the diagonal line. The output neuron defines the final section regarding these lines.
+	\pict{0.4}{F10}
+	There will be only one image that we haven't assign the corresponding neural network. if we set the wight properly for the neural network B, in a way that both input neurons receive only $x_2$, the following image can be accomplished.
+	\pict{0.4}{F11}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 7}
+	\subsection*{a}
+	\begin{flalign*}
+		&a \,\,  : \,\, x_1+ x_2 = 13 \qquad , \qquad b \,\, : \,\, x_2-x_1 = 13 \qquad , \qquad c \,\, : \,\, x_2 = -7&&\\
+		& \Rightarrow \begin{cases}
+			\text{blue} = 1 \qquad &  (x_1+x_2 \ge -13)\cap(x_2-x_1 \ge -13)\cap(x_2\ge -7) \\
+			\text{red} = 0 & \text{otherwise}
+		\end{cases}&&
+	\end{flalign*}
+	\pict{0.4}{F12}
+	We can design the neural network using 3 input neurons and 1 output neuron as follows:
+	\pict{0.3}{F19}
+	
+	\subsection*{b}
+	Only one generalized neuron will be enough.
+	\begin{flalign*}
+		&f_{net} (x_1, x_2) = x_1^2 + y_1^2 \qquad , \qquad f_{act}(net) = \begin{cases}
+			1 \qquad & \text{ if } net < 49\\
+			0 & \text{otherwise}
+		\end{cases} \qquad , \qquad f_{out}(act) = act&&
+	\end{flalign*}
+
+	\subsection*{c}
+	Using a single generalized neuron, we can create a connected geometric region in the feature space via appropriate equations and formulas for network function, activation and output function . If the TLU network creates this connected, cohesive space, it can be modeled using a single generalized neuron but in the cases that the TLU network consists of several cohesive regions (like question 5), several generalized neurons will be needed for each that regions.
+	
+	\subsection*{d}
+	The pre process includes considering the square of the inputs instead if themselves. 
+	\begin{flalign*}
+		&\text{define } \quad u = x_1^2 \qquad , \qquad v = x_2^2 \quad \Rightarrow \quad y = \begin{cases}
+			1 \qquad & \text{ if } -u-v \ge -49\\
+			0 & \text{otherwise} 
+		\end{cases}&&
+	\end{flalign*}
+	In this way, only one single TLU will be enough.
+	\pict{0.2}{F20}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 8}
+	\begin{flalign*}
+		&\text{neuron 1} : \qquad z_1 = \exp\left(-\frac{(\max\{| x - 3 |,| x - 5 |,| x + 2 |\})^2}{4}\right) \qquad \Rightarrow&&\\
+		&f_{net} = | x - 3 |,| x - 5 |,| x + 2 |&&\\
+		&\text{neuron 2} : \qquad z_2 = \begin{cases}
+			0 \qquad & \sqrt{(x_1+3)^2 + (x_3 - 4)^2} > 4\\
+			1 & \text{otherwise}
+		\end{cases} \qquad \Rightarrow&&\\
+		&f_{net} = \sqrt{(x_1+3)^2 + (x_3 - 4)^2} \qquad , \qquad f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net \ge 4 \\
+			1 & \text{otherwise}
+		\end{cases} \qquad , \qquad f_{out} (act) = act&&\\
+		&\text{neuron 3} : \qquad y =  6z_1+2z_2+4&&\\
+		&f_{net} = 6z_1 + 2z_2 + 4 \qquad , \qquad f_{act} = net \qquad , \qquad f_{out} (act)= act&&
+	\end{flalign*}
+	
+	%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 10}
+	\subsection*{a}
+	The wight matrix will be as follows
+	\begin{align*}
+		\mat{ 0 & 0 & 2 & -2 \\ 2 & 0 & 0 & -3 \\ 1 & -1 & 0 & 4 \\ 0 & 2 & 1 & 0}
+	\end{align*}
+
+	\subsection*{b}
+	In the input phase the output of the input neurons will be the value of external inputs and the output of the output neurons will be assigned arbitrarily as 0.
+	\begin{align*}
+		u_1 = 1 \qquad , \qquad u_2 = 1 \qquad , \qquad u_3 = 0 \qquad , \qquad u_4 = 0
+	\end{align*}
+	Now we start updating the values of the neurons based on the given order
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\textbf{$net_u$} & \textbf{$u_1$} & \textbf{$u_2$} & \textbf{$u_3$} & \textbf{$u_4$} \\
+			\hline
+			$net_{u_3} = 2u_1 + u_4 = 2$ & $1$ & $1$ & $1$ & $0$ \\
+			\hline
+			$net_{u_4} = -2u_1 -3u_2 + 4u_3 = -1$ & $1$ & $1$ & 1 & 0 \\
+			\hline
+			$net_{u_1} = 2u_2 + u_3 = 2$ & $1$ & $1$ & 1 & 0 \\
+			\hline
+			$net_{u_2} = -u_3 + 2u_4 = -1$ & $1$ & 0 & 1 & 0 \\
+			\hline
+			$net_{u_3} = 2u_1 + u_4 = 2$ & $1$ & 0 & 1 & 0 \\
+			\hline
+			$net_{u_4} = -2u_1 -3u_2 + 4u_3 = 2$ & $1$ & 0 & 1 & 1 \\
+			\hline
+			$net_{u_1} = 2u_2 + u_3 = 1$ & 1 & 0 & 1 & 1 \\
+			\hline
+			$net_{u_2} = -u_3 + 2u_4 = 1$ & $1$ & 1 & 1 & 0 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 11}
+	\subsection*{a}
+	\begin{flalign*}
+		w_1x_1 + w_2x_2 \ge \theta \Rightarrow x_1 - x_2 \ge -0.2
+	\end{flalign*}
+	\pict{0.4}{F13}
+	It can be seen that 4 data will be assigned with wrong label
+	\subsection*{b}
+	\begin{flalign*}
+		&x = (0.7 \, , \, 0.65) \qquad , \qquad w = \mat{1 \\ -1} \quad \Rightarrow \quad w^{(new)} = w + \eta \, (o - y) \, x = \mat{1 \\ -1} - \frac{1}{2} \times 2\mat{0.7 \\ 0.65} = \mat{0.3 \\ -1.65}&&\\
+		&\theta^{(new)} = \theta - \eta(o-y) = -0.2 + \frac{1}{2} \times 2 = 0.8 \qquad \Rightarrow \qquad 0.3x_1 - 1.65x_2 \ge 0.8&&
+	\end{flalign*}
+	\pict{0.4}{F14}
+	Four data have been labeled incorrectly.
+	
+	\subsection*{c \& d}
+	For this section we have developed a MATLAB code to train this simple neural network. All necessary explanations are provided via comment in the code itself. A section of the code can be seen below. 
+	\begin{lstlisting}
+		for i=1:n_itter
+			y = -1*ones(1,length(x));
+			y(w' * x' >= theta) = 1;
+			error(:,i) = out - y;
+			error_labeled = nonzeros(error(:,i)); % get the nonzero elements
+			% stop the process if there is no error :)
+			if isempty(error_labeled)
+				break;
+			else
+				% randomly choose one of the data labeled wrongly
+				idx = randi(length(error_labeled)); % get a random index
+				idx = find(error(:,i) == error_labeled(idx), 1);
+				% save the chosen data
+				selected_data(i, :) = x(idx, :);
+				% update weights and threshold
+				w = w + eta * (out(idx) - y(idx)) * x(idx, :)';
+				theta = theta - eta * (out(idx) - y(idx));
+				fprintf('number of iterations: %d \n', i)
+				fprintf('the resulting weigths: w1=%d , w2=%d \n', w(1), w(2));
+				fprintf('threshold = %d \n', theta);
+				disp('-------------------------------')
+			end
+		end
+	\end{lstlisting}
+	Now we set the number of iterations to 4 and run the code. Here we can see the value of weights and threshold in each iteration:
+	\pict{0.6}{F15}
+	We have created a matrix in our code in order to save the values of errors in each iteration for outputs of all data
+	\pict{0.6}{F16}
+	We can see that we still facing 4 errors. So now we increase the number of iterations to 100 but we note that in the code, the process will stop whenever the error equals to zero. Here is the final result:
+	\pict{0.6}{F17}
+	It can be seen that after 15 iterations we won't have any errors. The final value for the weights and the threshold can be also seen above.
+	\pict{0.4}{F18}
+\end{document}
