@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/W32TeX) (preloaded format=xelatex 2022.7.25)  22 OCT 2023 23:57
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/W32TeX) (preloaded format=xelatex 2022.7.25)  26 OCT 2023 20:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -471,70 +471,82 @@ Underfull \hbox (badness 10000) in paragraph at lines 126--128
  []
 
 [2]
+File: Fig/F22.png Graphic file (type bmp)
+<Fig/F22.png>
 File: Fig/F1.png Graphic file (type bmp)
 <Fig/F1.png>
+ [3]
+File: Fig/F23.png Graphic file (type bmp)
+<Fig/F23.png>
+File: Fig/F24.png Graphic file (type bmp)
+<Fig/F24.png>
+File: Fig/F25.png Graphic file (type bmp)
+<Fig/F25.png>
+ [4]
 File: Fig/F2.png Graphic file (type bmp)
 <Fig/F2.png>
- [3]
 File: Fig/F3.png Graphic file (type bmp)
 <Fig/F3.png>
+ [5]
 File: Fig/F4.png Graphic file (type bmp)
 <Fig/F4.png>
 File: Fig/F5.png Graphic file (type bmp)
 <Fig/F5.png>
+File: Fig/F21.png Graphic file (type bmp)
+<Fig/F21.png>
+ [6]
 File: Fig/F6.png Graphic file (type bmp)
 <Fig/F6.png>
- [4]
 File: Fig/F7.png Graphic file (type bmp)
 <Fig/F7.png>
+ [7]
 File: Fig/F8.png Graphic file (type bmp)
 <Fig/F8.png>
 File: Fig/F9.png Graphic file (type bmp)
 <Fig/F9.png>
 File: Fig/F10.png Graphic file (type bmp)
 <Fig/F10.png>
- [5]
 File: Fig/F11.png Graphic file (type bmp)
 <Fig/F11.png>
 File: Fig/F12.png Graphic file (type bmp)
 <Fig/F12.png>
+ [8]
 File: Fig/F19.png Graphic file (type bmp)
 <Fig/F19.png>
- [6]
 File: Fig/F20.png Graphic file (type bmp)
 <Fig/F20.png>
- [7]
+ [9] [10]
 File: Fig/F13.png Graphic file (type bmp)
 <Fig/F13.png>
 File: Fig/F14.png Graphic file (type bmp)
 <Fig/F14.png>
- [8]
+ [11]
 File: Fig/F15.png Graphic file (type bmp)
 <Fig/F15.png>
- [9]
 File: Fig/F16.png Graphic file (type bmp)
 <Fig/F16.png>
+ [12]
 File: Fig/F17.png Graphic file (type bmp)
 <Fig/F17.png>
 File: Fig/F18.png Graphic file (type bmp)
 <Fig/F18.png>
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 346.
- [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 346.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 423.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 423.
  (./CI_HW1_99104781.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 346.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 346.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 423.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 423.
 Package rerunfilecheck Info: File `CI_HW1_99104781.out' has not changed.
-(rerunfilecheck)             Checksum: 032DE1422454937580FF5691787B5073;434.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 346.
+(rerunfilecheck)             Checksum: A3E233215B0F562B5D189F92A00AA0B4;534.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 423.
  ) 
 Here is how much of TeX's memory you used:
- 12227 strings out of 479418
- 170947 string characters out of 5888105
- 650709 words of memory out of 5000000
- 29543 multiletter control sequences out of 15000+600000
+ 12257 strings out of 479418
+ 171317 string characters out of 5888105
+ 651709 words of memory out of 5000000
+ 29568 multiletter control sequences out of 15000+600000
  540990 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 34i,16n,45p,486b,1568s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,16n,45p,534b,1568s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on CI_HW1_99104781.pdf (10 pages).
+Output written on CI_HW1_99104781.pdf (13 pages).

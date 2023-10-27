@@ -107,7 +107,7 @@
 	If we code the outputs using one-hot encoding, we will need \textbf{10 neurons} for output (for each output class only one neuron has output value of 1).\\
 	It is also possible to use simple binary coding for output classes using 4 bits. In this case we only need \textbf{4 output neurons}.
 	\subsection*{c}
-	The number and size of hidden layers depend on the complexity and non-linearity of the problem. We note that if the number of samples and test data are relatively small its not recommended to have several hidden layers since the convergence won't be achieved. The more hidden layer we have, the more complexity we deal with.
+	The number and size of hidden layers depend on the complexity and non-linearity of the problem. We note that if the number of samples and test data are relatively small its not recommended to have several hidden layers since the convergence won't be achieved. The more hidden layer we have, the more complexity we deal with. Also note that here the inputs can be sparse as some pixels of hand written numbers in the corners are the same for all inputs. The concept of dimensionality reduction can be seen here. 
 	
 	\subsection*{d}
 	In this case, each output of our neural network is value of a particular pixel. The range of this input value is quite vast from 0 to 255. Normalizing input values can make the optimization process faster and more efficient, by preventing the gradients from becoming too large or too small, and by making the error surface smoother and more symmetric.\\\\
@@ -124,8 +124,23 @@
 	
 	\subsection*{b}
 	A linearly separable function is one that can be computed by a single TLU by dividing the input space into two regions with a hyperplane.\\\\
-	Suppose we fix the 4 MSB bits to "1010". Now we have to consider only one bit. To check the hamming distance we have to use and implement the XOR function which is not linearly separable. Since we can not linearly separate our data in this specific dimension, the whole problem can not me separated linearly. We have to use XOR units.
+	Although the hamming code can be calculated using XOR which is not linearly separable, in this problem the second code is fixed so there is no need for XOR. In the following section we will show why this problem is linearly separable by providing a TLU as a proof.
 	
+	\subsection*{c}
+	We assume there is a TLU with wieghts of $w_i$ and threshold of $\theta$ that can solve this problem.
+	\begin{flalign*}
+		&\text{ if } x = 10101 \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i = w_1+w_3+w_5 \ge \theta \qquad , \qquad \text{ if } x = 10100 \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i = w_1+w_3 \ge \theta&&\\
+		&\text{ if } x = 10001 \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i = w_1+w_5 \ge \theta \qquad , \qquad \text{ if } x = 00101 \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i = w_3+w_5 \ge \theta&&\\
+		&\text{ if $x$ has only one "1" } \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i = w_i \ge \theta \qquad , \qquad \text{ if } x = 11111 \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i \ge \theta&&\\
+		&\text{ if } x = 01010 \quad \Rightarrow \quad \sum_{i=1}^{5}w_ix_i = w_2+w_4 < \theta&&\\
+		&\text{ assume that } \theta = 2 \qquad \text{based on the above inequalities we set the following values for } w_i \, :&&\\
+		&w_1 = w_3 = w_5 = 1 \qquad , \qquad w_2 = w_4 = -1&&
+	\end{flalign*}
+	we have checked all possible inputs for this network and it can be seen that this TLU works properly.
+	\pict{0.25}{F22}
+	\subsection*{d}
+	The error will occur when the hamming distance of the sample is greater than or equal to 2 but our network's output is 1.
+	The error for the train data can be defined as difference of the hamming distance in comparison to 2. We want to keep this distance bellow 2.
 		%-----------------------------------------------------------------------------------------------------------------	
 	\section{Question 3}
 	We first create the karnaugh map for this problem and simplify it as follows : 
@@ -134,6 +149,29 @@
 		&y = \overline{x_1} \, x_4 + x_2x_4 + x_1x_3\overline{x_4}&&
 	\end{flalign*} 
 	
+	\subsection*{a}
+	\begin{flalign*}
+		&\text{AND : } w_i = \begin{cases}
+			2 \qquad & \text{ if } l_i = x_i \\
+			-2 & \text{ if } l_i = \overline{x_i}
+		\end{cases} \qquad , \qquad \theta = n - 1 + \frac{1}{2} \sum_{i=1}^{n} w_i \qquad , \qquad \text{ OR : } w_i = 2 \quad , \quad \theta = 1&&
+	\end{flalign*}
+	\pict{0.4}{F23}
+	
+	\subsection*{b}
+	We set the thresholds to 0 by adding another weigh for the neurons with value of $-\theta$ and fixed corresponding input of 1.
+	\pict{0.4}{F24}
+	
+	\subsection*{c}
+	\begin{center}
+		\begin{tabular}{c|c|c|c||c|c|c||c}
+			\textbf{$x_1$} & \textbf{$x_2$} & \textbf{$x_3$} & \textbf{$x_4$} & \textbf{$o_1$} & \textbf{$x_2$} & \textbf{$o_3$} & \textbf{$y$} \\
+			\hline
+			0 & 0.5 & 0 & 0.5 & 0 & 0 & 0 & 0 
+		\end{tabular}
+	\end{center}
+	Based on the above table and following figure, there previous network will have error for this specific input.
+	\pict{0.2}{F25}
 		%-----------------------------------------------------------------------------------------------------------------	
 	\section{Question 4}
 	\subsection*{a}
@@ -184,6 +222,29 @@
 	\pict{0.3}{F4}
 	The final answer is aggregation of the above two answers. 
 	\pict{0.3}{F5}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 5}
+	\subsection*{a}
+	\pict{0.5}{F21}
+	Regarding the above figure, we need 12 TLUs to create each of these lines. Then we need 4 more neurons to perform the AND process to generate each squares. Finally one more TLU is needed to aggregate these 4 sections. The final result for the number of required TLUs is \textbf{17}
+	\begin{flalign*}
+		&\text{TLUs : } u_1 : -x_1 - x_2 \ge -1 \qquad , \qquad u_2 : x_1 + x_2 \ge -1 \qquad , \qquad u_3 : -x_1 - x_2 \ge 3&&\\
+		&u_4 : x_1 + x_2 \ge -5 \qquad , \qquad u_5 : x_1 + x_2 \ge 3 \qquad , \qquad u_6 : -x_1 - x_2 \ge -5&&\\
+		&u_7 : x_1 - x_2 \ge -5 \qquad , \qquad u_8 : -x_1 + x_2 \ge 3 \qquad , \qquad u_9 : x_1 - x_2 \ge -1&&\\
+		&u_{10} : -x_1 + x_2 \ge -1 \qquad , \qquad u_{11} : x_1 - x_2 \ge 3 \qquad , \qquad u_{12} : -x_1 + x_2 \ge -5&&\\
+		&u_{13} \, , \, u_{14} \, , \, u_{15} \, , \, u_{16} \, : \text{ AND TLUs } \Rightarrow w_1 = \dots = w_4 = 2 \quad , \quad \theta = 7&&\\
+		&u_{17} \, : \, \text{ OR TLU } : \Rightarrow w_1 = \dots = w_4 = 2 \quad , \quad \theta = 1&&\\\\
+		&\text{Ancestor}(u_{13}) = \{u_{11} \, , \, u_{12} \, , \, u_{1} \, , \, u_{2}\} \qquad , \qquad \text{Ancestor}(u_{14}) = \{u_{9} \, , \, u_{10} \, , \, u_{5} \, , \, u_{6}\}&&\\
+		&\text{Ancestor}(u_{15}) = \{u_{1} \, , \, u_{2} \, , \, u_{8} \, , \, u_{7}\} \qquad , \qquad \text{Ancestor}(u_{16}) = \{u_{9} \, , \, u_{10} \, , \, u_{3} \, , \, u_{4}\}&&\\
+		&\text{Ancestor}(u_{17}) = \{u_{13} \, , \, u_{14} \, , \, u_{15} \, , \, u_{16}\}&&
+	\end{flalign*}. 
+
+	\subsection*{b}
+	Here we need to rotate and move some of the lines in the previous section by changing the weights and thresholds of the TLUs. Also 4 input TLUs will be removed by setting their weights to 0. The final layer for OR operation is not required anymore.
+	
+	\subsection*{c}
+	In the general case, we need some TLUs to create the lines used for classification in one layer. Then in the following layer we will need some other TLUs to perform the AND operation and generate each closed section. Since the general case can consist of several closed sections (like in section a) we will need another layer to aggregate these section. Therefor, in the general case will require 3 layers. 
 	
 		%-----------------------------------------------------------------------------------------------------------------	
 	\section{Question 6}
@@ -241,7 +302,7 @@
 	\section{Question 8}
 	\begin{flalign*}
 		&\text{neuron 1} : \qquad z_1 = \exp\left(-\frac{(\max\{| x - 3 |,| x - 5 |,| x + 2 |\})^2}{4}\right) \qquad \Rightarrow&&\\
-		&f_{net} = | x - 3 |,| x - 5 |,| x + 2 |&&\\
+		&f_{net} = \max\{| x - 3 |,| x - 5 |,| x + 2 |\} \qquad , \qquad f_{act}(net) = \exp\left(-\frac{net^2}{4}\right) \qquad , \qquad f_{out} (act) = act&&\\
 		&\text{neuron 2} : \qquad z_2 = \begin{cases}
 			0 \qquad & \sqrt{(x_1+3)^2 + (x_3 - 4)^2} > 4\\
 			1 & \text{otherwise}
@@ -252,6 +313,22 @@
 		\end{cases} \qquad , \qquad f_{out} (act) = act&&\\
 		&\text{neuron 3} : \qquad y =  6z_1+2z_2+4&&\\
 		&f_{net} = 6z_1 + 2z_2 + 4 \qquad , \qquad f_{act} = net \qquad , \qquad f_{out} (act)= act&&
+	\end{flalign*}
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 9}
+	Since the $f_{net}$ can only be a weighted sum function, we have to someway convert $x_1^{x_2}$ into linear combination format. Thus we utilize the logarithmic function. In order to implement the $\max$ function, we have used the following formula :
+	\begin{align*}
+		\max\{a , b\} = \frac{a + b}{2} + \frac{|a-b|}{2}
+	\end{align*}
+	We use 6 general neurons as follows:
+	\begin{flalign*}
+		&\text{neuron 1 : } \text{input : } x_2 \quad , \quad f_{net} = x_2 \quad , \quad f_{act}(net) = \log\left(net\right) \quad , \quad f_{out}(act) = act&&\\
+		&\text{neuron 2 : } \text{input : } x_1 \quad , \quad f_{net} = x_1 \quad , \quad f_{act}(net) = \log\left(\log (net)\right) \quad , \quad f_{out}(act) = act&&\\
+		&\text{neuron 3 : } \text{input : } out_1 \, , \, out_2 \quad , \quad f_{net} = in_1 + in_2 \quad , \quad f_{act}(net) = \exp(\exp(net)) \quad , \quad f_{out}(act) = act&&\\
+		&\text{neuron 4 : } \text{input : } x_3 \, , \, out_3 \quad , \quad f_{net} = in_1 + in_2 \quad , \quad f_{act}(net) = net \quad , \quad f_{out}(act) = act&&\\
+		&\text{neuron 5 : } \text{input : } x_3 \, , \, out_3 \quad , \quad f_{net} = in_1 - in_2 \quad , \quad f_{act}(net) = |net| \quad , \quad f_{out}(act) = act&&\\
+		&\text{neuron 6 : } \text{input : } out_4 \, , \, out_5 \quad , \quad f_{net} = \frac{in_1}{2} + \frac{in_2}{2} \quad , \quad f_{act}(net) = net \quad , \quad f_{out}(act) = act&&
 	\end{flalign*}
 	
 	%-----------------------------------------------------------------------------------------------------------------	
