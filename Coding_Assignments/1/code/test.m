@@ -14,35 +14,19 @@ versicolor_data = irisData(versicolor_idx, :);
 %%
 clc; close all;
 
-figure;
-subplot(2,3,1);
-scatter_features(setosa_data, versicolor_data, 1,2);
-subplot(2,3,2);
-scatter_features(setosa_data, versicolor_data, 1,3);
-subplot(2,3,3);
-scatter_features(setosa_data, versicolor_data, 1,4);
-subplot(2,3,4);
-scatter_features(setosa_data, versicolor_data, 2,3);
-subplot(2,3,5);
-scatter_features(setosa_data, versicolor_data, 2,4);
-subplot(2,3,6);
-scatter_features(setosa_data, versicolor_data, 3,4);
-
-%%
-clc; close all;
-
 P = randperm (50);
-train_data = [setosa_data(P(1:40), 3:4) ; versicolor_data(P(1:40), 3:4)];
+
+train_data = [setosa_data(P(1:5), 3:4) ; versicolor_data(P(1:5), 3:4)];
 
 % all data labels within an array (first class 1 then class 0)
-out = [ones(1,40), zeros(1,40)];
+out = [ones(1,5), zeros(1,5)];
 
 % online learning
 % train the model
 n_iter = 100;
 eta = 0.5;
 
-[w_online, theta_online, iter_num] = online_learning(eta, n_iter, train_data, out);
+[w_online, theta_online, iter_num] = batch_learning(eta, n_iter, train_data, out);
 
 disp('Online learning');
 fprintf('number of iterations: %d \n', iter_num)
@@ -50,84 +34,16 @@ fprintf('the resulting weigths: w1=%d , w2=%d \n', w_online(1, end), w_online(2,
 fprintf('threshold = %d \n', theta_online(end));
 
 figure;
-scatter_features(setosa_data, versicolor_data, 3,4); hold on;
+scatter_features(setosa_data(P(1:5),:), versicolor_data(P(1:5),:), 3,4); hold on;
 title('Online learning')
 plot_line(w_online(1, end), w_online(2, end), theta_online(end)); hold off;
 
-%% batch learning
 
-clc; close all;
-
-n_iter = 100;
-eta = 0.5;
-
-[w_batch, theta_batch, n_iter_batch] = batch_learning(eta, n_iter, train_data, out);
-
-disp('Batch learning');
-fprintf('number of iterations: %d \n', n_iter_batch)
-fprintf('the resulting weigths: w1=%d , w2=%d \n', w_batch(1, end), w_batch(2, end));
-fprintf('threshold = %d \n', theta_batch(end));
-
-figure;
-scatter_features(setosa_data, versicolor_data, 3,4); hold on;
-title('Batch learning')
-plot_line(w_batch(1, end), w_batch(2, end), theta_batch(end)); hold off;
-
-
-%% 
-
-% online learning w and theta plots
-figure;
-subplot(3,1,1)
-plot(w_online(1,:))
-title('Online learning')
-xlabel('iteration')
-ylabel('w1');
-subplot(3,1,2)
-plot(w_online(2,:))
-xlabel('iteration')
-ylabel('w2');
-subplot(3,1,3)
-plot(theta_online)
-xlabel('iteration')
-ylabel('theta');
-
-% batch learning w and theta plots
-figure;
-subplot(3,1,1)
-plot(w_batch(1,:))
-title('Batch learning')
-xlabel('epoch')
-ylabel('w1');
-subplot(3,1,2)
-plot(w_batch(2,:))
-xlabel('epoch')
-ylabel('w2');
-subplot(3,1,3)
-plot(theta_batch)
-xlabel('epoch')
-ylabel('theta');
-
-%%
-
-clc; close all;
-
-test_data = [setosa_data(P(41:50), 3:4) ; versicolor_data(P(41:50), 3:4)];
-out_test = [ones(1,10), zeros(1,10)];
-
-y_online = w_online(:, end)' * test_data' >= theta_online(end);
-
-y_batch = w_batch(:, end)' * test_data' >= theta_batch(end);
-
-acc_online = sum(y_online == out_test)/length(out_test) * 100;
-acc_batch = sum(y_batch == out_test)/length(out_test) * 100;
-
-fprintf('Accuracy of classification train by online learning: %d  \n', acc_online);
-fprintf('Accuracy of classification train by batch learning: %d \n', acc_batch);
-
-%% 
+%% functions
 
 function scatter_features(data1, data2, f1,f2)
+    data1
+    data2
     % Plotting features: sepal length vs sepal width
     scatter(data1(:,f1), data1(:,f2), 'filled', 'MarkerFaceColor', 'r');
     hold on;
@@ -180,10 +96,20 @@ function [w_array, theta_array, iter_num] = online_learning(eta, n_iter, x, out)
     iter_num = i;
 end
 
+function plot_line(w1, w2, theta)
+    slope = -w1/w2;
+    intercept = theta/w2;
+
+    x = 0:0.1:5;
+    y = slope*x + intercept;
+
+    plot(x,y,'r'); xlabel('x'); ylabel('y');
+end
+
 function [w_array, theta_array, iter_num] = batch_learning(eta, n_iter, x, out)
     
-    init_w = [0; 0];
-    init_theta = 5;
+    init_w = [-1; -1];
+    init_theta = -5;
 
     w = init_w;
     theta = init_theta;
@@ -209,6 +135,12 @@ function [w_array, theta_array, iter_num] = batch_learning(eta, n_iter, x, out)
                 % Update the error count
                 e = e + abs(out(j) - y);
             end
+            fprintf('wx = %d \n', w' * x(j,:)')
+            fprintf('y = %d \n', y)
+            fprintf('e = %d \n', abs(out(j) - y))
+            fprintf('detatheta = %d \n', - eta * (out(j) - y))
+            fprintf('delta w = %d \n', eta * (out(j) - y) * x(j,:)')
+            disp('-------')
         end
 
         % Update the threshold and weights using the temporary values
@@ -216,7 +148,6 @@ function [w_array, theta_array, iter_num] = batch_learning(eta, n_iter, x, out)
         theta_array = [theta_array theta];
         w = w + w_c;
         w_array = [w_array w];
-
         % Check if the error count is less than or equal to zero
         % If true, exit the loop as the training is complete
         if e <= 0
@@ -226,12 +157,3 @@ function [w_array, theta_array, iter_num] = batch_learning(eta, n_iter, x, out)
     iter_num = i;
 end
 
-function plot_line(w1, w2, theta)
-    slope = -w1/w2;
-    intercept = theta/w2;
-
-    x = 0:0.1:5;
-    y = slope*x + intercept;
-
-    plot(x,y,'r'); xlabel('x'); ylabel('y');
-end
