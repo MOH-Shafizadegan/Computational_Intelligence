@@ -231,7 +231,32 @@
 	Regarding this figure, we can infer that these two classes of data can be separated quite well using features 3 and 4. For the rest of this question we will use these features for training process.
 	
 	\subsection*{b}
-	
+	First we randomly choose 5 data from each class.
+	\begin{flalign*}
+		\text{class 1 : } (1.4, 0.2) \, , \, (1.2, 0.2) \, , \, (1.4, 0.1) \, , \, (1.4, 0.3) \, , \, (1, 0.2)\\
+		\text{class 2 : } (4.5, 1.5) \, , \, (4.5, 1.6) \, , \, (4, 1) \, , \, (4.2, 1.2) \, , \, (4.9, 1.5)
+	\end{flalign*}
+	Now using the delta rule, we train our network. The whole process can be seen in the following table. We note that we have used batch learning algorithm for this section.
+	\begin{center}
+		\begin{tabular}{|c|c|c|c||c|c|c||c|c||c|c|}
+			\hline
+			\textbf{epoch} & \textbf{$x_1$} & \textbf{$x_2$} & \textbf{$o$} & \textbf{$xw$} & $y$ & $e$ & $\Delta\theta$ & $\Delta w$ & $\theta$ & $w$ \\
+			\hline
+			&&&&&&&&&-5& $(-1 ; -1)$ \\
+			\hline
+			1&1.9&0.2&1&-2.1&1&0&-1&$(0; 0)$&& \\
+			&1.6&0.2&1&-1.8&1&0&-1&$(0; 0)$&& \\
+			&1.7&0.3&1&-2&1&0&-1&$(0; 0)$&& \\
+			&1.4&0.2&1&-1.6&1&0&-1&$(0; 0)$&& \\
+			&1.4&0.3&1&-1.7&1&0&-1&$(0; 0)$&& \\
+			&4.5&1.5&0&-5.6&0&0&0&$(0; 0)$&& \\
+			&4.5&1.6&0&-5.5&0&0&0&$(0; 0)$&& \\
+			&4&1&0&-6&0&0&0&$(0; 0)$&& \\
+			&4.2&1.2&0&-5.6&0&0&0&$(0; 0)$&& \\
+			&4.9&1.5&0&-5.1&0&0&0&$(0; 0)$&-5&(-1 ; -1) \\
+			\hline
+		\end{tabular}
+	\end{center}
 	
 	\subsection*{c}
 	First we randomly separate 80\% of our data for training and their corresponding labels, as follows:
@@ -309,7 +334,7 @@
 		end
 	\end{lstlisting}
 	Using this function, we visualize the results:
-	\pict{0.45}{Q2_F3}
+	\pict{0.5}{Q2_F3}
 	Now for implementing the batch learning algorithm, we also develop a function called "batch\_learning". The attitude toward developing the this function is quite the same as before except for the algorithm for updating the wights and the threshold which obey the batch learning rule.\\
 	The code used for updating the parameters can be seen below:
 	\begin{lstlisting}
@@ -363,7 +388,7 @@
 		title('Batch learning')
 		plot_line(w_batch(1, end), w_batch(2, end), theta_batch(end)); hold off;
 	\end{lstlisting}
-	\pict{0.6}{Q2_F4}
+	\pict{0.7}{Q2_F4}
 	
 	\subsection*{d}
 	Now using the matrices we define for storing the values of weights and threshold for each algorithm, we simply plot the process using subplots. Here are the codes of these sections:
@@ -384,17 +409,17 @@
 		ylabel('theta');
 	\end{lstlisting}
 	\begin{center}
-		\includegraphics[width=0.4\linewidth]{Fig/Q2_F6.png}
+		\includegraphics[width=0.45\linewidth]{Fig/Q2_F6.png}
 		\qquad\qquad
-		\includegraphics[width=0.4\linewidth]{Fig/Q2_F7.png}
+		\includegraphics[width=0.45\linewidth]{Fig/Q2_F7.png}
 	\end{center}
 
 	\subsection*{e}
 	As we discussed the results before, we once again demonstrate them here:
 	\begin{center}
-		\includegraphics[width=0.3\linewidth]{Fig/Q2_F3.png}
+		\includegraphics[width=0.35\linewidth]{Fig/Q2_F3.png}
 		\qquad\qquad
-		\includegraphics[width=0.5\linewidth]{Fig/Q2_F4.png}
+		\includegraphics[width=0.55\linewidth]{Fig/Q2_F4.png}
 	\end{center}
 
 	\subsection*{f}
@@ -446,6 +471,7 @@
 		subplot(2,2,4);
 		scatter_features(setosa_data, versicolor_data, virginica_data, 1, 3, 4);
 	\end{lstlisting}
+\newpage
 	The results are as follows:
 	\pict{1}{Q2_F9}
 	It can be seen vividly that data from classes "iris-versicolor" and "iris-virginica" can't be separated linearly using a plane. These classes are somehow a little mixed with each other which make it impossible to separate them linearly. Therefor, we can't classify these classes using a network of TLUs.\\\\
