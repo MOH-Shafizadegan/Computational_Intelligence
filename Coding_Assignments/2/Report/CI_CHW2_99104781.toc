@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Question 1}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Dataset overview}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Linear Regression}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Logistic Regression}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Neural Network}{5}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Question 2}{7}{section.2}%
+\contentsline {subsection}{\numberline {2.1}MLP with one output neuron}{7}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Two output neurons}{8}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Question 3}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Part 2}{11}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Sigmoid activation function}{12}{subsection.3.2}%
