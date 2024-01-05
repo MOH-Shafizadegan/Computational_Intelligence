@@ -1,0 +1,242 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[top=1in, right=0.75in, left=0.75in]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=MATLAB,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,	                   % adds a frame around the code
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	rulecolor=\color{black},
+	breakatwhitespace=true,
+	tabsize=3,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=10pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{customgray}, % the style that is used for the line-numbers
+}
+
+\author{
+	Mohammad Hossein Shafizadegan\\
+	99104781
+}
+\title{
+	Assignment 3 \\
+	Computational Intelligence  \\
+	Dr. S. Hajipour
+}
+
+\pagestyle{fancy}
+\rhead{CI}
+\lhead{Assignment 3}
+
+\newcommand{\pict}[2]{\begin{center}
+		\includegraphics[width=#1\linewidth]{Fig/#2.png}
+\end{center}}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\deter}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\begin{document}
+	\begin{figure}
+		\includegraphics[width=0.25\textwidth]{Fig/Sharif.png}
+		\centering
+	\end{figure}
+	\maketitle
+	\tableofcontents
+	\newpage
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 1}
+	We have assumed that we have a simple RBF network. Also we note that when we are increasing the number of training inputs we don't change and design the network again. This means that the number of hidden neurons won't change as we increase the training data.
+	\subsection*{a}
+	\subsubsection*{Average Training Error:}
+	Regarding what we said above, when we increase the training data, the mean training error will increase as we need more hidden neurons but we have fixed the their number.
+	\subsubsection*{Mean Validation Error:}
+	Adding more training data may \textbf{decrease} the mean validation error as the model processes more examples and learns to generalize better.
+	
+	\subsection*{b}
+	As we increase the training data, the mean training error and mean validation error \textbf{may converge or get closer}. This is because a well-regularized model, when exposed to sufficient representative data, is more likely to generalize well to both the training and validation sets. This may tends to stabilize or reduce the difference between mean training error and mean validation error.
+	
+	\subsection*{c}
+	As we increase the number of training data to infinity, the mean training error and mean validation error get closer and closer and finally converge to a specific value. This value can be defined as the \textbf{True error} as its independent of the training and validation data.
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 2}
+	In this question the error or cost function is considered as sum of squared error terms.
+	\begin{flalign*}
+		&\textbf{Updating rule for weights between the hidden layer and output layer :}&&\\
+		&\nabla_{W_u} e_u^{(l)} = \frac{\partial e_u^{(l)}}{\partial W_u} = -2(o_u^{(l)} - out_u^{(l)}) \, in_u^{(l)} \quad \Rightarrow \quad \Delta W_u^{(l)} = -\frac{\eta}{2}\nabla_{W_u} e_u^{(l)} =  \eta (o_u^{(l)} - out_u^{(l)}) \, in_u^{(l)}&&\\\\
+		&\textbf{Updating rule for weights between the input layer and hidden layer :}&&\\
+		&\nabla_{W_v} e^{(l)} = \frac{\partial e^{(l)}}{\partial W_v} = -2 \sum_{s \in secc(v)}(o_s^{(l)} - out_s^{(l)}) \, w_{sv} \, \frac{\partial out_v^{(l)}}{\partial net_v^{(l)}} \, \frac{\partial net_v^{(l)}}{\partial w_v} \quad , \quad \frac{\partial out_v^{(l)}}{\partial net_v^{(l)}} = \begin{cases}
+			0 \qquad & \text{ if } net > \sigma\\
+			-\frac{1}{\sigma} & \text{O.W.}
+		\end{cases}&&\\
+		&d(x,w) = \left(\sum_{i=1}^{n} |x-w|^3\right)^\frac{1}{3} \quad\Rightarrow\quad \frac{\partial net_v^{(l)}}{\partial w_v} = \frac{1}{3} \left(\sum_{i=1}^{n} |x-w|^3\right)^{-\frac{2}{3}} \, |x-w|^2 \times \frac{|x-w|}{x-w}&&\\\\
+		&\textbf{Updating rule for $\sigma$ :}&&\\
+		&\frac{\partial e^{(l)}}{\partial \sigma_v} =  -2 \sum_{s \in secc(v)}(o_s^{(l)} - out_s^{(l)}) \, w_{sv} \, \frac{\partial out_v^{(l)}}{\partial \sigma_v} \quad , \quad \frac{\partial out_v^{(l)}}{\partial \sigma_v} = \begin{cases}
+			0 \qquad & \text{ if } net > \sigma\\
+			\frac{net}{\sigma^2} & \text{O.W.}
+		\end{cases} \quad , \quad \Delta \sigma_v = - \frac{\eta}{2} \frac{\partial e^{(l)}}{\partial \sigma_v}&&
+	\end{flalign*}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 3}
+	Firs we discuss the case of $\sigma = 2$
+	\begin{align*}
+		f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net > 2\\
+			1 - \frac{net}{2} & \quad\text{ O.W.}
+		\end{cases}
+	\end{align*}
+	First we map the given outputs to the range of 0 to 1 by defining the threshold used in the output neuron
+	\begin{align*}
+		\theta = 0.5 \Rightarrow \begin{cases}
+			z'_1 = 0	\qquad \Rightarrow \qquad net \ge 2\\
+			z'_2 = 0	\qquad \Rightarrow \qquad net \ge 2\\
+			z'_3 = 0.5	\quad \Rightarrow \qquad net = 1\\
+			z'_4 = 1	\qquad \Rightarrow \qquad net = 0\\
+		\end{cases}
+	\end{align*}
+	In this case, we can use the infinity norm as distance function and set the center of the catchment area at $(0,2)$, therefor:
+	\begin{align*}
+		d(w, x) = \max_{i} |w_i - x_i|\qquad , \qquad w = \mat{0\\2}
+	\end{align*}
+	\pict{0.4}{F4}
+	Now for the case of $\sigma = 4$
+	\begin{align*}
+		f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net > 4\\
+			1 - \frac{net}{4} & \quad\text{ O.W.}
+		\end{cases}
+	\end{align*}
+	Now we map the given outputs to the range of 0 to 1 by defining the threshold used in the output neuron
+	\begin{align*}
+		\theta = 0.5 \Rightarrow \begin{cases}
+			z'_1 = 0.5	\qquad \Rightarrow \qquad net = 2\\
+			z'_2 = 0	\qquad \Rightarrow \qquad net \ge 4\\
+			z'_3 = 0.5	\quad \Rightarrow \qquad net = 2\\
+			z'_4 = 1	\qquad \Rightarrow \qquad net = 0\\
+		\end{cases}
+	\end{align*}
+	In this case, we can use the Manhattan distance as network function and set the center of the catchment area at $(0,2)$, therefor:
+	\begin{align*}
+		d(w, x) = \sum_{i=1}^{2} |w_i - x_i|\qquad , \qquad w = \mat{0\\2}
+	\end{align*}
+	\pict{0.4}{F4}
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 4}
+	The RBF network consists of 5 neurons in the hidden layer. 4 neurons utilize Euclidean distance as network function and one uses Manhattan distance as network function.
+	\begin{flalign*}
+		&\text{neuron 1 : } w = \mat{2\\4} \qquad , \qquad  f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net > \sqrt{2}\\
+			1 & \quad \text{O.W.}
+		\end{cases} \qquad , \qquad f_{net} = \sqrt{(w_1 - x_1)^2 + (w_2 - x_2)^2}&&\\
+		&\text{neuron 2 : } w = \mat{4\\4} \qquad , \qquad  f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net > \sqrt{2}\\
+			1 & \quad \text{O.W.}
+		\end{cases} \qquad , \qquad f_{net} = \sqrt{(w_1 - x_1)^2 + (w_2 - x_2)^2}&&\\
+		&\text{neuron 3 : } w = \mat{2\\2} \qquad , \qquad  f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net > \sqrt{2}\\
+			1 & \quad \text{O.W.}
+		\end{cases} \qquad , \qquad f_{net} = \sqrt{(w_1 - x_1)^2 + (w_2 - x_2)^2}&&\\
+		&\text{neuron 4 : } w = \mat{4\\2} \qquad , \qquad  f_{act} = \begin{cases}
+			0 \qquad & \text{ if } net > \sqrt{2}\\
+			1 & \quad \text{O.W.}
+		\end{cases} \qquad , \qquad f_{net} = \sqrt{(w_1 - x_1)^2 + (w_2 - x_2)^2}&&\\
+		&\text{neuron 5 : } w = \mat{3\\3} \qquad , \qquad  f_{act} = \begin{cases}
+			1 \qquad & \text{ if } net > \sqrt{2}\\
+			0 & \quad \text{O.W.}
+		\end{cases} \qquad , \qquad f_{net} = |w_1 - x_1| + |w_2 - x_2|&&
+	\end{flalign*} 
+	Since the fact the only one neuron out of the first 4 first neurons has an output equal to 1 for an input, the only thing we have to do in the output layer is to add the output of all these 4 neurons and subtract them from the output of the 5th neuron. Therefor the specifications of the output neuron is  as follows:
+	\begin{flalign*}
+		&f_net = -out_5 + \sum_{i=1}^{4} out_i \qquad , \qquad f_{act} = net - 0&&\\
+	\end{flalign*}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 5}
+	Regarding the two conditions discussed in the question about the movement criteria of the robots, the boundary that they can serve the tables is where the addition of the distance to two points are equal to a constant value (10 in this case). Therefor, it can be inferred that the boundary is an oval and the robots can serve the tables inside an oval which its bigger diameter equals to 10 and its two focal points are the robot stations. 
+	\begin{flalign*}
+		&\frac{(x-x_0)^2}{a^2} + \frac{(y-y_0)^2}{b^2} = 1 \Rightarrow b^2(x-x_0)^2 + a^2(y-y_0)^2 = (ab)^2 \quad , \quad (x_0,y_0) = \frac{1}{2}\left(\mat{4\\9} + \mat{10\\9}\right) = \mat{7\\9} &&\\
+		&d = \sqrt{b^2(x-x_0)^2 + a^2(y-y_0)^2} \qquad , \qquad 2a = \text{bigger diameter} = 10 \Rightarrow a = 5&&\\
+		&b = \sqrt{a^2 - c^2} \qquad , \qquad 2c = \text{distance for the focal points} = 6 \Rightarrow c = 3 \quad \Rightarrow \quad b = 4 \quad \Rightarrow \quad d = ab = 20&&
+	\end{flalign*}
+	\pict{0.4}{F3}
+	We note that the output neuron has a linear activation function with $\theta = 0$
+	
+\newpage
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 6}
+	K-means organizes a dataset into k distinct groups based on similarity. The algorithm begins by randomly selecting k initial cluster centers, assigning each data point to the cluster whose center is closest, and then updating the cluster centers to be the mean of the data points in each cluster. This assignment and update process iterates until convergence, aiming to minimize the sum of squared distances between data points and their respective cluster centers.\\\\
+	Regarding what we mentioned above, the following figures and results are clustered using the kmeans algorithm as in the final result, each data point is assigned to its closet centroid.
+	\pict{0.6}{F2}
+	The following figures contain clusters that are not resulted from kmeans algorithm as there are some data point that are not assigned to their closest centroid. For figure \textbf{B1} and \textbf{E1}, the orange line demonstrates that some data point are not belong to their proper centroid.
+	\pict{0.5}{F1}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 7}
+	\subsection*{a}
+	First we randomly choose 20 out of 500 samples we have. In order to select the hidden neurons more wisely we divide the whole domain into 20 sectors and randomly choose one sample from each section. This way, the weight between the input layer and the hidden layer which indeed the coordinate of this points are defined.\\\\
+	Since we use Gaussian activation function the parameter $\sigma$ is initialized as follows:
+	\begin{align*}
+		\sigma_i = \frac{d_{max}}{\sqrt{2m}} \qquad , \qquad d_{max} = \max_{l_j \, , \, l_k \in L_{fixed}} d(i^{(l_j)} , i^{(l_k)}) \qquad , \qquad m = 20
+	\end{align*}
+	Then at the section where we assign the initial values for the weights between the hidden layer and the output layer, we have the followings:
+	\begin{flalign*}
+		&A = \mat{1 & out_{v_1}^{l_1} & out_{v_2}^{l_1} & \dots & out_{v_{20}}^{l_1} \\\\ 1 & out_{v_1}^{l_2} & out_{v_2}^{l_2} & \dots & out_{v_{20}}^{l_2} \\\\ \vdots & \vdots & \vdots & \ddots & \vdots\\\\ 1 & out_{v_1}^{l_{500}} & out_{v_2}^{l_{500}} & \dots & out_{v_{20}}^{l_{500}} } \quad , \quad w_u = \mat{-\theta_u\\\\w_{uv_1} \\\\ \vdots \\\\ w_{uv_{20}}} \quad , \quad Aw_u = o_u \quad , \quad	A^\dagger = (A^TA)^{-1}A^T \Rightarrow w_u = A^\dagger o_u&&
+	\end{flalign*}
+	Finally following the rules below, we iteratively update the parameters:
+	\begin{flalign*}
+		&\textbf{Updating rule for weights between the hidden layer and output layer :}&&\\
+		&\nabla_{W_u} e_u^{(l)} = \frac{\partial e_u^{(l)}}{\partial W_u} = -2(o_u^{(l)} - out_u^{(l)}) \, in_u^{(l)} \quad \Rightarrow \quad \Delta W_u^{(l)} = -\frac{\eta}{2}\nabla_{W_u} e_u^{(l)} =  \eta (o_u^{(l)} - out_u^{(l)}) \, in_u^{(l)}&&\\\\
+		&\textbf{Updating rule for weights between the input layer and hidden layer :}&&\\
+		&\nabla_{W_v} e^{(l)} = \frac{\partial e^{(l)}}{\partial W_v} = -2 \sum_{s \in secc(v)}(o_s^{(l)} - out_s^{(l)}) \, w_{sv} \, \frac{\partial out_v^{(l)}}{\partial net_v^{(l)}} \, \frac{\partial net_v^{(l)}}{\partial w_v}&&\\\\
+		&\text{Gaussian activation function} \Rightarrow \frac{\partial out_v^{(l)}}{\partial net_v^{(l)}} = - \frac{net_v^{(l)}}{\sigma_v^2} \, e^{-\frac{(net_v^{(l)})^2}{2\sigma_v^2}} &&\\\\
+		&\textbf{Updating rule for $\sigma$ :}&&\\
+		&\frac{\partial e^{(l)}}{\partial \sigma_v} =  -2 \sum_{s \in secc(v)}(o_s^{(l)} - out_s^{(l)}) \, w_{sv} \, \frac{\partial out_v^{(l)}}{\partial \sigma_v}&&
+	\end{flalign*}
+
+	\subsection*{b}
+	If we want to use the rectangular activation function for the hidden neurons, perhaps we have to find another way to initialize the value of $\sigma$.\\\\
+	More importantly in the rules of updating the weights between the input layer and the hidden layer the expression for $\frac{\partial out_v^{(l)}}{\partial net_v^{(l)}}$ will change correspondingly.
+	
+	\subsection*{c}
+	The initial value for the weights between the input layer and the hidden layer is defined as the coordinates of the hidden neurons are already provided. Following the previous formula for the initial value of $\sigma$ we have :
+	\begin{align*}
+		\sigma_i = \frac{d_{max}}{\sqrt{2m}} \quad , \quad d_{max} = \max_{l_j \, , \, l_k \in L_{fixed}} d(i^{(l_j)} , i^{(l_k)}) = 5\sqrt{2} \quad , \quad m = 4 \quad \Rightarrow \quad \sigma = \frac{5\sqrt{2}}{2\sqrt{2}} = 2.5
+	\end{align*}
+	If these 4 hidden neurons are among that 500 given samples, we simply create the matrix $A$ as explained the section a, and find the initial value for the output layer weights by solving the system of linear equations using pseudo inverse matrix.\\\\
+	Otherwise, as a simple solution, we can define a parameter $k$ and look for the $k$ nearest neighbors to our hidden neurons among the given 500 samples. Then we consider the average of the neighbors output as the output of the hidden neuron. This way we can define the matrix $A$ and we follow the method we discussed earlier.\\\\
+	The algorithm and formulas for updating the parameters is quite the same as before. 
+	
+	\subsection*{d}
+	The idea which can be useful for this question is to first recognize which region has the greater error value, then we try to enhance our estimation by dividing that region into more sections. In a loop, we repeatedly perform the same process. Every time we create new sections we have to add some neurons e.g. 2 ones to create 4 new subsections. Also in each step we need some neurons to determine which region has the greater error value.
+	
+\end{document}
