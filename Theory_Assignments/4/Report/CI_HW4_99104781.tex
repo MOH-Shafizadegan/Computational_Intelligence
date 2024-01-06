@@ -1,0 +1,286 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[top=1in, right=0.75in, left=0.75in]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=MATLAB,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,	                   % adds a frame around the code
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	rulecolor=\color{black},
+	breakatwhitespace=true,
+	tabsize=3,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=10pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{customgray}, % the style that is used for the line-numbers
+}
+
+\author{
+	Mohammad Hossein Shafizadegan\\
+	99104781
+}
+\title{
+	Assignment 4 \\
+	Computational Intelligence  \\
+	Dr. S. Hajipour
+}
+
+\pagestyle{fancy}
+\rhead{CI}
+\lhead{Assignment 4}
+
+\newcommand{\pict}[2]{\begin{center}
+		\includegraphics[width=#1\linewidth]{Fig/#2.png}
+\end{center}}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\deter}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\begin{document}
+	\begin{figure}
+		\includegraphics[width=0.25\textwidth]{Fig/Sharif.png}
+		\centering
+	\end{figure}
+	\maketitle
+	\tableofcontents
+	\newpage
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 1}
+	\subsection*{a}
+	\begin{flalign*}
+		&x_1 = 65413532 \quad \Rightarrow \quad f(x_1) = (6+5) - (4+1) + (3+5) - (3+2) = 9&&\\
+		&x_2 = 87126601 \quad \Rightarrow \quad f(x_2) = (8+7) - (1+2) + (6+6) - (0+1) = 23&&\\
+		&x_3 = 23921285 \quad \Rightarrow \quad f(x_3) = (2+3) - (9+2) + (1+2) - (8+5) = -16&&\\
+		&x_4 = 41852094 \quad \Rightarrow \quad f(x_4) = (4+1) - (8+5) + (2+0) - (9+4) = -19&&\\\\
+		&f(x_4) < f(x_3) < f(x_1) < f(x_2)&&
+	\end{flalign*}
+
+	\subsection*{b}
+	\begin{flalign*}
+		&(x_2, x_4) \rightarrow f(x_2) > f(x_4) \Rightarrow \text{winner: } x_2&&\\
+		&(x_1, x_3) \rightarrow f(x_1) > f(x_3) \Rightarrow \text{winner: } x_1&&\\
+		&(x_1, x_4) \rightarrow f(x_1) > f(x_4) \Rightarrow \text{winner: } x_1&&\\
+		&(x_3, x_4) \rightarrow f(x_3) > f(x_4) \Rightarrow \text{winner: } x_3&&
+	\end{flalign*}
+
+	\subsection*{c}
+	\begin{flalign*}
+		&\text{Two point crossover for } x_2 \,\, , \,\, x_1 \rightarrow \begin{cases}
+			8712 \, | \, 660 \, | \, 1\\
+			6541 \, | \, 353 \, | \, 2
+			\end{cases} \Rightarrow \begin{cases}
+				8712 \, | \, 353 \, | \, 1\\
+				6541 \, | \, 660 \, | \, 2
+			\end{cases} \Rightarrow \begin{cases}
+				87123531 \quad f = 16 \\
+				65416602 \quad f = 16
+			\end{cases}&&\\\\
+		&\text{Two point crossover for } x_1 \,\, , \,\, x_3 \rightarrow \begin{cases}
+				65 \, | \, 4135 \, | \, 32 \\
+				23 \, | \, 9212 \, | \, 85
+			\end{cases} \Rightarrow \begin{cases}
+				65 \, | \, 9212 \, | \, 32 \\
+				23 \, | \, 4135 \, | \, 85
+			\end{cases} \Rightarrow \begin{cases}
+				65921232  \quad f = -2\\
+				23413585 \quad f = -5
+			\end{cases}&&
+	\end{flalign*}
+
+	\subsection*{d}
+	Old Generation
+	\begin{flalign*}
+		average = \frac{1}{4}\left(9+23-16-19\right) = -\frac{3}{4} \qquad , \qquad max = 23
+	\end{flalign*}
+	New Generation
+	\begin{flalign*}
+		average = \frac{1}{4}\left(16+16-2-5\right) = \frac{25}{4} \qquad , \qquad max = 16
+	\end{flalign*}
+	The average value of fitness has increased but the maximum value of fitness has increased in the new generation in comparison to the old one. Having a greater average value means we are searching better zones but the bad news is that the maximum fitness is not located in this zone.
+	
+	\subsection*{e}
+	\begin{flalign*}
+		\text{optimum genotype: } 99009900 \qquad , \qquad f = 36
+	\end{flalign*}
+	
+	\subsection*{f}
+	Remember that the optimum genotype consists of 9 and 0. In the given initial population some chromosomes like $x_1$ and $x_2$ which have relatively high fitness values don't contain 9. Therefore, crossover for these chromosomes will not lead to the optimal answer.
+	
+	\subsection*{g}
+	In the following, "+" means mutation will be performed and "-" is the opposite. 
+	\begin{flalign*}
+		&\begin{bmatrix}
+			- & + & - & - & - & - & - & + \\
+			- & - & + & - & - & - & - & - \\
+			- & - & - & - & + & + & - & - \\
+			- & - & - & - & - & + & - & - 
+		\end{bmatrix} \Rightarrow \begin{cases}
+			89123530 \\
+			65016602 \\
+			65929932 \\
+			23413985
+		\end{cases}&&
+	\end{flalign*}  
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 2}
+	\subsection*{a}
+	The parameter \textbf{T} in this algorithm determines the probability of accepting worse solutions. It plays a crucial role in controlling the search behavior and exploration-exploitation trade-off during the optimization process.\\\\
+	At higher temperatures, the algorithm allows more exploration by accepting solutions that are worse than the current solution. In such way, algorithm can escape local optima.\\\\
+	For lower temperatures, algorithm shifts towards exploitation, focusing more on improving the current solution by accepting only better solutions or solutions that are slightly worse.
+	
+	\subsection*{b}
+	\begin{flalign*}
+		&\text{ if } T \rightarrow 0  \quad \Rightarrow \quad e^{\frac{-\Delta f}{kT}} \rightarrow 0 \quad \Rightarrow \quad \text{Hill Climbing algorithm}&&
+	\end{flalign*}
+
+	\subsection*{c}
+	\begin{flalign*}
+		&\text{ if } T \rightarrow \infty  \quad \Rightarrow \quad e^{\frac{-\Delta f}{kT}} \rightarrow 1 \quad \Rightarrow \quad \text{Random searching algorithm}&&
+	\end{flalign*}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 3}
+	\subsection*{a}
+	This approach at the first step of ranked-based selection can be reasonable, since we have no prior knowledge. It provides an initial exploration of the search space and allows for diverse solutions to be sampled.
+	
+	\subsection*{b}
+	Remember that in ranked-based selection, we choose first ranks with more probability and the ones with lower rank will will be chosen less often with lower probability. We should provide a method to implement this approach.\\\\
+	one commonly used method is the Fitness Proportionate Selection, also known as Roulette Wheel Selection. This method assigns selection probabilities to individuals based on their fitness values relative to the entire population.\\
+	Here is a step-by-step algorithm for Fitness Proportionate Selection:
+	\begin{enumerate}
+		\item Calculate the total fitness of the entire population.
+		\item Calculate the selection probability (P) for each individual by dividing its fitness value by the total fitness
+	\end{enumerate}
+	 The resulting values represent the probability distribution for each rank. Since in ranked-based algorithm we sort ranks decreasingly the probability distribution will finally be something like this:
+	 \pict{0.33}{F1}
+	 
+	 		%-----------------------------------------------------------------------------------------------------------------	
+	 \section{Question 4}
+	 \subsection*{a}
+	 The trend for optimum fitness in each generation will be non-decreasing. This is because elitism ensures that the best individuals from each generation are carried over to the next, so the optimum fitness should either improve or remain constant in subsequent generations. It is also expected that the curve of optimum fitness in each generation is above the provided curve.
+	 \pict{0.37}{F2}
+	 
+	 \subsection*{b}
+	 There is no guarantee that the best individuals from each generation are preserved in the next generation. This means that the optimum fitness may decrease or fluctuate over time, depending on the selection, crossover, and mutation operators. The average fitness may also converge slower or get stuck in local optima, as the population may lose diversity and beneficial genes.
+	 \pict{0.37}{F3}
+	 
+	 
+	 	%-----------------------------------------------------------------------------------------------------------------	
+	 \section{Question 5}
+	 If the fitness values have a small range and are close together, choose a smaller value for $\theta_i$ to reduce selection pressure and prevent excessive bias. \\\\\
+	 If the fitness values have a large range, choose a larger value for $\theta_i$ to increase selection pressure and focus more on exploitation.
+	 \begin{flalign*}
+	 	&f_5 : \qquad range = 7.9 - 1.8 = 6.1 \qquad \Rightarrow \qquad \theta_5 = 3&&\\
+	 	&f_{20} : \qquad range =  9.8 - 7.8 = 2 \qquad \Rightarrow \qquad \theta_{20} = 1&&\\
+	 	&f_{40} : \qquad range = 9.9 - 9.0 = 0.9 \qquad \Rightarrow \qquad \theta_{40} = 0.3&&
+	 \end{flalign*}
+ 
+ 		%-----------------------------------------------------------------------------------------------------------------	
+ 	\section{Question 6}
+ 	\subsection*{b}
+ 	For this problem, a suitable crossover operator would be the \textbf{One-Point Crossover}. Here we can see an example of this crossover for our problem:
+ 	\begin{flalign*}
+ 		\begin{cases}
+ 			111+1 \, | \, 1++11111 \\
+ 			11+11 \, | \, 1+1+11+11
+ 		\end{cases} \qquad \Rightarrow \qquad \begin{cases}
+ 		11+11 \, | \, 1++11111 \\
+ 		111+1 \, | \, 1+1+11+11
+ 	\end{cases}
+ 	\end{flalign*}
+ 	In general case, n-point crossover will works well for this problem.
+ 	
+ 	\subsection*{c}
+ 	The suitable mutation operation for this problem is swap operation. We can randomly choose two gens and perform the swap operation. Here is an solid example:
+ 	\begin{align*}
+ 		111+11++11111 \qquad \Rightarrow \qquad 111+11+111+11
+ 	\end{align*}
+ 	Shift, arbitrary permutation and inversion can be suitable for this problem too.
+ 	
+ 		%-----------------------------------------------------------------------------------------------------------------	
+ 	\section{Question 7}
+ 	\subsection*{Encryption}
+ 	We designate an array with the length of $N\times M$ as the chromosome. The first N genes are associated to the first worker, the second N genes are associated to the second worker and so on. The alleles of genes are float numbers ranging from $0$to $1$, indicating  the percentage of the job each worker is assigned to.
+ 	
+ 	\subsection*{Corrigendum}
+ 	As a correction phenomena that must be considered in this problem is to note that the summation of the alleles for each worker must be 1. Therefore, a normalization approach must be considered in the process of mutation and crossover.
+ 	
+ 	\subsection*{Mutation}
+ 	Since our alleles are float numbers ranging from $0$ to $1$, we will utilize the gaussian mutation. As of the correction term we should divide the alleles of the corresponding worker by summation of the alleles after the mutation processs.
+ 	
+ 	\subsection*{Crossover}
+ 	As of the crossover we can utilize the n-point crossover. We should remember to perform the correction procedure too
+ 	
+ 	\subsection*{Initial population}
+ 	Using a random process we generate numbers between $0$ to $1$ as allele for each gene of the chromosome. Don't forget the normalization correction process.
+ 	
+ 	\subsection*{Fitness function}
+ 	The following formula is considered for the fitness function:
+ 	\begin{align*}
+ 		-K \left(\sum_{i=1}^{M} w_i \, v_i \, \, > \,\, V_{max}\right) - \max_i w_iT_i
+ 	\end{align*}
+ 	 
+ 	 	%-----------------------------------------------------------------------------------------------------------------	
+ 	 \section{Question 8}
+ 	 \subsection*{Encryption}
+ 	 We designate an array with the length of $3N$ as the chromosome. The first N genes are associated to the first (red) color, the second N genes are associated to the green color and the third N genes encode yellow colors. The alleles of genes are binary digits where 0 denotes not having that color and 1 denotes having that color
+ 	 
+ 	 \subsection*{Corrigendum}
+ 	 Along the chromosome, there are three genes for each cell correspondingly as of the three colors. We should note that for these three cells, there must be only one gene with value of $1$ (one hot coding). So for the correction process we should check and correct the these specific genes to ensure this one hot encoding.
+ 	 
+ 	 \subsection*{Mutation}
+ 	 The bit mutation is highly recommended for this problem. Pair swap, perhaps is supposed to be an appropriate approach too. We shouldn't forget the correction process.
+ 	 
+ 	 \subsection*{Crossover}
+ 	 n-point crossover can be used for this problem. We should be aware of the correction process too.
+	
+	\subsection*{Initial population}
+	Using a random process we generate numbers between $0$ to $1$ as allele for each gene of the chromosome. Don't forget the correction process.
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 9}
+	\subsection*{Encryption}
+	 We designate an array with the length of $N$ as the chromosome. each gene corresponds to a request. The alleles of the genes are numbers demonstrating the number of the server responsible for the task.
+	
+	\subsection*{Crossover}
+	We can utilize the n-point crossover e.g. one point crossover.
+	
+	 \subsection*{Mutation}
+	 Using standard mutation we can randomly change the allele of a gene with a number ranging from 1 to N. Pair swap can be also beneficial as it will ensure that no new server will be involved in the chromosome.
+	 
+	 \subsection*{Fitness function}
+	 The following formula is considered for the fitness function:
+	 \begin{align*}
+	 	- \left(\sum_{i=1}^{N} ismemeber(i, A)\right) - B \left(\max_i \sum_{j=find(A==i)} w_j \,\, > \,\, M\right)
+	 \end{align*}
+	
+\end{document}
