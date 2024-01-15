@@ -1,0 +1,220 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[top=1in, right=0.75in, left=0.75in]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=MATLAB,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,	                   % adds a frame around the code
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	rulecolor=\color{black},
+	breakatwhitespace=true,
+	tabsize=3,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=10pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{customgray}, % the style that is used for the line-numbers
+}
+
+\author{
+	Mohammad Hossein Shafizadegan\\
+	99104781
+}
+\title{
+	Assignment 5 \\
+	Computational Intelligence  \\
+	Dr. S. Hajipour
+}
+
+\pagestyle{fancy}
+\rhead{CI}
+\lhead{Assignment 5}
+
+\newcommand{\pict}[2]{\begin{center}
+		\includegraphics[width=#1\linewidth]{Fig/#2.png}
+\end{center}}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\deter}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\begin{document}
+	\begin{figure}
+		\includegraphics[width=0.25\textwidth]{Fig/Sharif.png}
+		\centering
+	\end{figure}
+	\maketitle
+	\tableofcontents
+	\newpage
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 1}
+	we need to define the following components:
+	\begin{itemize}
+		\item \textbf{Particle Representation} \\
+		Each particle in the swarm represents a potential solution and consists of the locations of all sprinklers and and their irrigation time. A schematic of a particle can be seen below
+		\pict{0.5}{F1}
+		Where $(x_i, y_i)$ are real numbers representing the location of the sprinkle and $T_i$ represents the irrigation time in hours and is a real number .
+		\begin{align*}
+			0 \le x_i \le 100 \qquad , \qquad 0 \le y_i \le 100 \qquad , \qquad 0 \le T_i \le 24 \text{ hour}
+		\end{align*}
+	
+		\item \textbf{Fitness function}\\
+		We aim to maximize the following fitness function:
+		\begin{align*}
+			f = - \frac{1}{N} \sum_{i=1}^{N} \left|H_i - \hat{H}_i\right|
+		\end{align*}
+		Where $H_I$ denotes the desired measured humidity of the $i$th sensor and $\hat{H}_i$ is value of humidity of the sensor measured at each (current) iteration.
+		
+		\item Each particle keeps track of its best solution (position) and the global best solution among the entire swarm. The particles move based on their current position, velocity, and the influence of their best position and the global best position.
+	\end{itemize}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 2}
+	\subsection*{a}
+	In this problem, each particle is an array containing 9 elements, each representing the length of the wood stick. The first element corresponds to the bottom position and the last element indicates the wood placed at the top (part 9). This defines the position vector. The formula for updating the position and velocity vector can be seen below:
+	\begin{align*}
+		v_i(t+1) = v_i(t) + \beta_1 \left(x_i^{(local)} (t) - x_i(t)\right) + \beta_2 \left(x_i^{(global)} (t) - x_i(t)\right) \qquad , \qquad x_i(t+1) = x_i(t) + v_i(t)
+	\end{align*} 
+	Value of each element in the position vector, ranges from 0 to $L$, considering the fact that summation of all the elements must be equal to $L$.
+	\begin{align*}
+		\forall i \, : \, 0 \le L_i \le L \qquad , \qquad \sum_{i=1}^{9} L_i = L
+	\end{align*}
+	
+	\subsection*{b}
+	We will consider a penalty term for the case that summation of all pieces exceed $L$. The fitness function can be defined as follows:
+	\begin{align*}
+		f  = -c \times sign\left(\sum_{i=1}^{9} L_i > L\right) - \left|S - \delta \sum_{i=1}^{9} L_i\right|
+	\end{align*}
+	Where $S$ is the area of the desired shape.
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 3}
+	\subsection*{a}
+	The position and velocity vectors are arrays with 5 elements. Each element is a real number and can vary in the range of 0 to 10. We can update the velocity and position using the following formulas:
+	\begin{align*}
+		v_i(t+1) = v_i(t) + \beta_1 \left(x_i^{(local)} (t) - x_i(t)\right) + \beta_2 \left(x_i^{(global)} (t) - x_i(t)\right) \\\\
+		x_i(t+1) = \max\left(\min\left(x_i(t) + v_i(t) \, , \, \mat{10 \\ \vdots \\ 10}\right) \, , \, \mat{0 \\ \vdots \\ 0}\right)
+	\end{align*}
+	We don't have any constrains for the velocity vector but we should be careful about the range of the position vector.
+	
+	\subsection*{b}
+	The procedure is the same except that only the position values (not velocity) are discrete. Therefor, we have to change the formula for position correspondingly.
+	\begin{align*}
+		v_i(t+1) = v_i(t) + \beta_1 \left(x_i^{(local)} (t) - x_i(t)\right) + \beta_2 \left(x_i^{(global)} (t) - x_i(t)\right) \\\\
+		x_i(t+1) = \text{Round}\left(\max\left(\min\left(x_i(t) + v_i(t) \, , \, \mat{10 \\ \vdots \\ 10}\right) \, , \, \mat{0 \\ \vdots \\ 0}\right)\right)
+	\end{align*}
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 4}
+	In the ACO algorithm we have to define and clarify the following concepts:
+	\begin{itemize}
+		\item \textbf{Graph nodes and edges}\\
+		We consider a fully connected graph consisting of two sets of nodes. One including 4 nodes for each position. The other set consists of 6 nodes denoting the colors. The edges of the graph are places between these two sets of nodes. A schematic of this graph can be seen below:
+		\pict{0.3}{F2}
+		
+		\item \textbf{A candidate for the solution} \\
+		We aim to choose 4 edge from all of the 24 possible edges. We note that these 4 edges, must connect each node of the left side to one of the nodes on the right side. The optimum and best 4 edges will be chosen based on the pheromone of the edges. In the process, whenever an edge is selected, all the edges connected to that starting node (on the left side) will be removed.
+		
+		\item \textbf{Constrains} \\
+		As stated before, each starting node on the left side must have one and only one edge. This must be considered in the process of selecting the edges.
+		
+		\item \textbf{The pheromone} \\
+		By choosing 4 edges, a candidate will be chosen and the computer can calculate the score based on the described method for similarity of the candidate and the final answer. This score can be used as the pheromone for the selecting process.
+		
+		\item \textbf{Useful info.} \\
+		It is stated that the probability of selecting two similar colors in a row (two adjacent position) is half of the probability of choosing different colors. This can be useful when choosing the edges in a way that we can consider the edge of the adjacent position.
+	\end{itemize}
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 5}
+	\subsubsection*{Graph nodes and edges}
+	We consider a fully connected graph consisting of two sets of nodes. One including N nodes for each task. The other set consists of M nodes indicating the workers. The edges of the graph are places between these two sets of nodes and each one assign a work a task.
+	
+	\subsubsection*{A candidate for the solution}
+	First we consider a node in the tasks set. Based on the probability of choosing an edge which depends on the value of pheromone, task time (T) and cost (V),  we choose one edge. This will indicate the worker assigned to this task. Then with a probability we decide whether we assign this task to another worker or not. If so, we probabilistically choose another edge after removing the previous one which is already assigned to a worker. We continue this process once again as it is stated that a task can be assigned to three workers. This procedure we be done again for other tasks.
+	
+	\subsubsection*{Constrains}
+	We note that each task can not be assigned to more than 3 workers. This issue is addressed in the method we construct a candidate.\\
+	Also the total cost in this problem must not exceed $V_{max}$. This is addressed by utilizing a penalty term.
+	
+	\subsubsection*{The pheromone}
+	By selecting and forming a candidate solution, we can calculate the total required time and cost considering the fact that some tasks are executed in parallel and some in series. Indeed there must be a simple mechanism that define this phenomena and calculate the total time. For updating the pheromones, we will add a proportion of the inverse of this total time to the pheromones of the edges selected in this solution. As of the penalty term, we decrease the pheromones if the total cost exceeds $V_{max}$.
+	\begin{align*}
+		pheromone(t+1) = pheromone(t) + \frac{1}{T_{total}} - c \times sign\left(V_{total} > V_{max}\right)
+	\end{align*}
+	
+	\subsubsection*{Useful info.}
+	We tend to minimize the required time to finish all the task and we want the cost to be as low as possible. Therefore, the inverse of time ($\frac{1}{T_{nm}}$) and inverse of cost ($\frac{1}{V_{nm}}$) can be also useful in the process of selecting the edges alongside considering the pheromones.
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 6}
+	\subsubsection*{Graph nodes and edges}
+	Consider a graph including $N$ sub graphs representing the provinces. Each sub graph consists of $I_n$ nodes, indicating the cities of the province. The edges are only connected between sub graphs and the nodes of a sub graph are not connected to each other as it is stated that we want to travel into only one city of each province. The value of the edges represent the distance between the two corresponding cities.
+	
+	\subsubsection*{A candidate for the solution}
+	First we randomly choose one node from one of the sub graphs. Based on the probability of choosing an edge which depends on the value of pheromone, we choose one edge. Meanwhile, all the edges connected to the nodes of initial sub graph should be removed. We continue this procedure to reach the last city and then we choose the edge that bring us back to where we start our journey (the initial node).
+	
+	\subsubsection*{Constrains}
+	We shouldn't forget that we travel to only one city in a province.  As mentioned before, we  should remove all the edges connected to the other nodes of the province we start our journey.
+	
+	\subsubsection*{The pheromone}
+	By selecting and forming a candidate solution (a series of nodes), we can calculate the total distance traveled since the edges represent the distance of the cities. For updating the pheromones, we will add a proportion of the inverse of this total distance to the pheromones of the edges selected in this solution (path).
+	
+	\subsubsection*{Useful info.}
+	We tend to find the path with shortest total distance. Therefore, the inverse of value of edges can be also useful in the process of selecting the edges alongside considering the pheromones.
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 7}
+	\subsection*{a}
+	The examiner tends to reduce the number of similar questions between individuals. Since cheating is some thing double sided (between two student), we can use $L_{ij}^2$. As the number similar questions increases, the chance of cheating will also increase but not linearly.
+	
+	\subsection*{b}
+	In the ACO algorithm we have to define and clarify the following concepts:
+	\begin{itemize}
+		\item \textbf{Graph nodes and edges}\\
+		We consider a fully connected graph consisting of two sets of nodes. One including 50 nodes, each node stands for a student. The other set consists of 8 subsets representing the type of questions. Each subset contains $M_i$ nodes representing the questions of the $i$-th type.
+	
+		\item \textbf{A candidate for the solution} \\
+		We begin with the first student. probabilistically based on the pheromones, we choose a edge among the first subset on the questions side and then remove all the edges connected to the nodes of this subset. We continue this process so that each student is assigned with 8 questions from different types of questions.
+		
+		\item \textbf{Constrains} \\
+		Only one question must be selected from each subset (type) of questions.
+		
+		\item \textbf{The pheromone} \\
+		Based on the selected edges, we calculate $L_{ij}$. Then we define the pheromone of these edges using the following formula:
+		\begin{align*}
+			\phi = \frac{c}{\sum_{i,j \,\, , \,\, i\ne j} L_{ij}^2}
+		\end{align*}
+		
+		\item \textbf{Useful info.} \\
+		In the selection procedure, we can consider the history of selected questions for previous students. In this way, we choose the questions previously chosen for previous students with less probability.
+	\end{itemize}
+	
+	
+\end{document}
