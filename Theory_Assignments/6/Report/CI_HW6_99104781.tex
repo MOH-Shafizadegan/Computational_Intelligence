@@ -1,0 +1,346 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[top=1in, right=0.75in, left=0.75in]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=MATLAB,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,	                   % adds a frame around the code
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	rulecolor=\color{black},
+	breakatwhitespace=true,
+	tabsize=3,
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=10pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{customgray}, % the style that is used for the line-numbers
+}
+
+\author{
+	Mohammad Hossein Shafizadegan\\
+	99104781
+}
+\title{
+	Assignment 6 \\
+	Computational Intelligence  \\
+	Dr. S. Hajipour
+}
+
+\pagestyle{fancy}
+\rhead{CI}
+\lhead{Assignment 6}
+
+\newcommand{\pict}[2]{\begin{center}
+		\includegraphics[width=#1\linewidth]{Fig/#2.png}
+\end{center}}
+\newcommand{\mat}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\deter}[1]{\begin{vmatrix} #1 \end{vmatrix}}
+
+\definecolor{customgreen}{rgb}{0,0.6,0}
+\definecolor{customgray}{rgb}{0.5,0.5,0.5}
+\definecolor{custommauve}{rgb}{0.6,0,0.8}
+
+\begin{document}
+	\begin{figure}
+		\includegraphics[width=0.25\textwidth]{Fig/Sharif.png}
+		\centering
+	\end{figure}
+	\maketitle
+	\tableofcontents
+	\newpage
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 1}
+	One possible fuzzy function for this problem is as follows:
+	\begin{align*}
+		\mu(x) = \begin{cases}
+			-0.2 \, x +2 \qquad 5 \le x \le 10 \\
+			0  \qquad\qquad\qquad \text{ O.W.}
+		\end{cases} \qquad , \qquad [\mu]_\alpha = [5, \, 10 - 5\alpha] \quad , \quad 0<\alpha\le1
+	\end{align*}
+	\pict{0.5}{F1}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 2}
+	A t-norm must satisfy the following properties:
+	\begin{flalign*}
+		&\text{Part 1: } T(x,y)&&\\
+		&(T1) \qquad t(\alpha, \beta) = t(\beta, \alpha) \qquad T(x,y) = T(y,x) \qquad \checkmark&&\\
+		&(T2) \qquad t\left(t(\alpha, \beta), \gamma\right) = t\left(\alpha, t(\beta, \gamma)\right) &&\\
+		&\text{ if } \alpha = 0.55 \,\, , \,\, \beta=\gamma = 0.95 \Rightarrow \begin{cases}
+			T(0.55, 0.95) = 0.5 \Rightarrow T(T(0.55, 0.95), 0.95) = T(0.5, 0.95) = 0.45 \\
+			T(0.95, 0.95) = 0.9 \Rightarrow T(0.55, T(0.95, 0.95)) = T(0.55, 0.9) = 0.5 
+		\end{cases} \Rightarrow \times&&
+	\end{flalign*}
+	The second constrain is not satisfied so $T(x,y)$ can not be a t-norm.
+	\begin{flalign*}
+		&\text{Part 2: } I(x,y)&&\\
+		&(T1) \qquad t(\alpha, \beta) = t(\beta, \alpha) \qquad I(x,y) = I(y,x) \qquad \checkmark&&\\
+		&(T2) \qquad t\left(t(\alpha, \beta), \gamma\right) = t\left(\alpha, t(\beta, \gamma)\right) \qquad \checkmark&&\\
+		&I(I(x,y), z) = \begin{cases}
+			0 \qquad\qquad x,y \in (0, 0.5) \\
+			I(x,z) \qquad x<y \\
+			I(y,z) \qquad \text{O.W.}
+		\end{cases} \,\, = \,\, I(x, I(y, z)) = \begin{cases}
+		I(x,0) = 0 \qquad\qquad x,y \in (0, 0.5) \,\, , \,\, z \in (0, 0.5)\\
+		I(x,0) = 0 \qquad\qquad x,y \in (0, 0.5) \,\, , \,\, z = 0 \\
+		I(x,y) = 0 \qquad\qquad x,y \in (0, 0.5) \,\, , \,\, z \in (0, 0.5)\\
+		I(y,z) \qquad x>y \\
+		I(y,z) \qquad \text{O.W.}
+	\end{cases}&&\\
+	&T(3) \qquad \beta \le \gamma \Rightarrow t(\alpha, \beta) \le t(\alpha, \gamma) \qquad \checkmark&&\\
+	&\text{ if } x \le y \Rightarrow \begin{cases}
+		\text{ if } x, y, z \in (0, 0.5) \Rightarrow I(x, z) = 0 = I(y,z) \\
+		\text{ if } z = 0 \Rightarrow I(x,z) = 0 = I(y,z) \\
+		\text{ if } z \ge 0.5 \,\, , \,\, x > z \Rightarrow \min(x, z) = z \,\, , \,\, \min(y,z) = z \Rightarrow I(x,z) = I(y,z) \\
+		\text{ if } z \ge 0.5 \,\, , \,\, x < z \Rightarrow \min(x, z) = x \,\, , \,\, \min(y,z) = z \text{or} y \Rightarrow I(x,z) \ge I(y,z) 
+	\end{cases}&&\\
+	&T(4) \qquad I(x, 1) = \min(x, 1) = x \qquad \checkmark&&
+	\end{flalign*}
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 3}
+	\begin{flalign*}
+		\mu_{h} (x) = \begin{cases}
+			\frac{1}{15} \, x - \frac{10}{3} \qquad\qquad 50 \le x \le 65 \\\\
+			\frac{-1}{15} \, x + \frac{16}{3} \qquad\qquad 65 \le x \le 80 \\\\
+			0 \qquad\qquad\qquad\qquad\quad \text{ O.W. }
+		\end{cases} \qquad , \qquad \mu_{vh} (x) = \begin{cases}
+			0 \qquad\qquad\qquad\qquad x < 65 \\\\
+			\frac{1}{15} \, x - \frac{13}{3} \qquad\qquad 65 \le x \le 80\\\\
+			1 \qquad\qquad\qquad\qquad x > 80
+		\end{cases}
+	\end{flalign*}
+	\subsection*{a}
+	\begin{flalign*}
+		&t(\alpha, \beta) = \alpha . \beta \Rightarrow \mu_h \cap_t \mu_{vh} = \begin{cases}
+			\left(\frac{-1}{15} \, x + \frac{16}{3}\right)\left(\frac{1}{15} \, x - \frac{13}{3}\right) = \frac{1}{225} (-x^2 + 145 x - 5200) \qquad\qquad 65 \le x \le 80 \\\\
+			0 \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad \text{O.W.}
+		\end{cases}&&
+	\end{flalign*}
+	\pict{0.5}{F2}
+	
+	\subsection*{b}
+	\begin{flalign*}
+		&t(\alpha, \beta) = \begin{cases}
+			0 \qquad\qquad \text{ if } 1 \notin \{\alpha, \beta\} \\
+			\min(\alpha, \beta) \qquad\qquad \text{O.W.}
+		\end{cases} \qquad \Rightarrow \qquad \mu_h \cap_t \mu_{vh} = \begin{cases}
+		\min(1, 0) = 0 \qquad\qquad x = 65 \\
+		\min(0, 1) = 0 \qquad\qquad x \ge 80 \\
+		0 \qquad\qquad\qquad\qquad \text{O.W.}
+	\end{cases}&&
+	\end{flalign*}
+
+	\subsection*{c}
+	\begin{flalign*}
+		s(\alpha, \beta) = \alpha + \beta - \alpha\beta \qquad \Rightarrow \qquad \mu_h \cup_t \mu_{vh} = \begin{cases}
+			0 \qquad\qquad\qquad\qquad\qquad\qquad\qquad x < 50\\\\
+			\frac{1}{15} \, x - \frac{10}{3} \qquad\qquad\qquad\qquad\qquad 50 \le x \le 65\\\\
+			1 - \frac{1}{225} (-x^2 + 145 x - 5200) \qquad 65 \le x \le 80\\\\
+			1 \qquad\qquad\qquad\qquad\qquad\qquad\qquad x > 80
+		\end{cases}
+	\end{flalign*}
+	\pict{0.5}{F3}
+	
+	\subsection*{d}
+	\begin{flalign*}
+		&s(\alpha, \beta) = \begin{cases}
+			1 \qquad\qquad\qquad\qquad 0 \notin \{\alpha, \beta\} \\
+			\max\{\alpha, \beta\}\qquad\qquad \text{O.W.}
+		\end{cases} \qquad \Rightarrow \qquad \mu_h \cup_t \mu_{vh} = \begin{cases}
+		0 \qquad\qquad\qquad\qquad\qquad x < 50 \\\\
+		\frac{1}{15} \, x - \frac{10}{3} \qquad\qquad 50 \le x \le 65 \\\\
+		1 \qquad\qquad\qquad\qquad\qquad x > 65
+	\end{cases}&&
+	\end{flalign*}
+	\pict{0.5}{F4}
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 4}
+	In order to be able to calculate the union and intersection of these fuzzy sets using the $\alpha$-cuts, we have to use $\min$ and $\max$ as t-norm and t-conorm functions. Using the figure of the previous question, we have the followings:
+	\begin{flalign*}
+		&[\mu_{vl} \cap \mu_l]_{\alpha} = [\mu_{vl}]_{\alpha} \cap [\mu_l]_{\alpha} \qquad , \qquad [\mu_{vl}]_{\alpha} = [0, 35 - 15\alpha] \qquad , \qquad [\mu_{l}]_{\alpha} = [15\alpha + 20, 50 - 15\alpha] \qquad  \Rightarrow&&\\\\
+		&\text{ if } \alpha > 0.5 \Rightarrow 15\alpha > 7.5 \Rightarrow \begin{cases}
+			35 - 15\alpha < 27.5 \\
+			15\alpha + 20 > 27.5 \\
+			50 - 15\alpha < 42.5
+		\end{cases} \Rightarrow [\mu_{vl}]_{\alpha} \cap [\mu_l]_{\alpha} = \emptyset&&\\\\
+		&\text{ if } \alpha \le 0.5 \Rightarrow 15\alpha \le 7.5 \Rightarrow \begin{cases}
+			35 - 15\alpha \ge 27.5 \\
+			15\alpha + 20 \le 27.5 \\
+			50 - 15\alpha \ge 42.5
+		\end{cases} \Rightarrow [\mu_{vl}]_{\alpha} \cap [\mu_l]_{\alpha} = [15\alpha + 20, \, 35 - 15\alpha]&&\\\\
+		&\Rightarrow [\mu_{vl} \cap \mu_l]_{\alpha} = \begin{cases}
+			\emptyset \qquad\qquad\qquad\qquad\qquad \alpha > 0.5 \\
+			[15\alpha + 20, \, 35 - 15\alpha] \qquad \text{O.W.}
+		\end{cases}&&\\\\
+		&[\mu_{vl} \cup \mu_l]_{\alpha} = [\mu_{vl}]_{\alpha} \cup [\mu_l]_{\alpha} \qquad , \qquad [\mu_{vl}]_{\alpha} = [0, 35 - 15\alpha] \qquad , \qquad [\mu_{l}]_{\alpha} = [15\alpha + 20, 50 - 15\alpha] \qquad  \Rightarrow&&\\\\
+		&\text{ if } \alpha > 0.5 \Rightarrow 15\alpha > 7.5 \Rightarrow \begin{cases}
+			35 - 15\alpha < 27.5 \\
+			15\alpha + 20 > 27.5 \\
+			50 - 15\alpha < 42.5
+		\end{cases} \Rightarrow [\mu_{vl}]_{\alpha} \cup [\mu_l]_{\alpha} = [0, 35 - 15\alpha] \cup [15\alpha + 20, 50 - 15\alpha]&&\\\\
+		&\text{ if } \alpha \le 0.5 \Rightarrow 15\alpha \le 7.5 \Rightarrow \begin{cases}
+			35 - 15\alpha \ge 27.5 \\
+			15\alpha + 20 \le 27.5 \\
+			50 - 15\alpha \ge 42.5
+		\end{cases} \Rightarrow [\mu_{vl}]_{\alpha} \cup [\mu_l]_{\alpha} = [0, \, 50 - 15\alpha]&&\\\\
+		&\Rightarrow [\mu_{vl} \cup \mu_l]_{\alpha} = \begin{cases}
+			[0, 35 - 15\alpha] \cup [15\alpha + 20, 50 - 15\alpha] \qquad \alpha > 0.5 \\
+			[0, \, 50 - 15\alpha] \qquad\qquad\qquad\qquad\qquad\qquad \text{O.W.}
+		\end{cases}&&
+	\end{flalign*}
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 5}
+	\subsection*{a}
+	\subsubsection*{Drastic product \& and drastic sum}
+	\begin{flalign*}
+		&s(\alpha, \beta) = \begin{cases}
+			1 \qquad\qquad\qquad\qquad 0 \notin \{\alpha, \beta\} \\
+			\max\{\alpha, \beta\}\qquad\qquad \text{O.W.}
+		\end{cases} \qquad , \qquad t(\alpha, \beta) = \begin{cases}
+		0 \qquad\qquad \text{ if } 1 \notin \{\alpha, \beta\} \\
+		\min(\alpha, \beta) \qquad\qquad \text{O.W.}
+	\end{cases}&&\\\\
+	& \overleftrightarrow{t}\left(\mu_M(6) , \mu_H(10)\right)= t\left(\vec{t}(\mu_M(6) , \mu_H(10)) \,  , \, \vec{t}(\mu_H(10) , \mu_M(6))\right)&&\\
+	&\vec{t}(\mu_M(6) , \mu_H(10)) = \sup \left\{ \gamma \in [0,1] | t(\mu_M(6), \gamma) \le \mu_H(10) \right\} && \\
+	&\mu_M(6) = \frac{2}{3} \,\, , \,\, \mu_H(10) = \frac{1}{3} \,\, , \,\,  t(\mu_M(6), \gamma) = \begin{cases}
+		\frac{2}{3} \qquad \gamma = 1 \\
+		0 \qquad \gamma \ne 1
+	\end{cases} \qquad \Rightarrow \qquad \vec{t}(\mu_M(6) , \mu_H(10)) = 1&&\\
+	&\vec{t}(\mu_H(10) , \mu_M(6)) = \sup \left\{ \gamma \in [0,1] | t(\frac{1}{3}, \gamma) \le \frac{2}{3} \right\} \quad , \quad t(\frac{1}{3}, \gamma) = \begin{cases}
+		\frac{1}{3} \qquad \gamma = 1 \\
+		0 \qquad \gamma \ne 1
+	\end{cases} \qquad \Rightarrow \qquad \vec{t}(\mu_H(10) , \mu_M(6)) = 1&&\\
+	&\Rightarrow \quad \overleftrightarrow{t}\left(\mu_M(6) , \mu_H(10)\right)= t (1, 1) = 1&&
+	\end{flalign*}
+
+	\subsubsection*{Łukasiewicz}
+	\begin{flalign*}
+		&t(\alpha, \beta) = \max \{\alpha + \beta - 1, 0\} \qquad , \qquad \vec{t} \{\alpha, \beta\} = \min \{1-\alpha + \beta, 1.\}&&\\
+		&\vec{t}(\mu_M(6) , \mu_H(10)) = \min\{1- \frac{2}{3} + \frac{1}{3} \, , \, 1\} = \frac{2}{3} \qquad , \qquad \vec{t}(\mu_H(10) , \mu_M(6)) = \min\{1- \frac{1}{3} + \frac{2}{3} \, , \, 1\} = 1&&\\\\
+		&\overleftrightarrow{t}\left(\mu_M(6) , \mu_H(10)\right)= \begin{cases}
+			\min\{1 \, , \, \frac{2}{3}\} = \frac{2}{3} \\\\
+			\max\{1 + \frac{2}{3} - 1 \, , \, 0\} = \frac{2}{3}
+		\end{cases}&&
+	\end{flalign*}
+
+	\subsection*{b}
+	\begin{flalign*}
+		&\llbracket \forall x \ge 10 \, ; \, x \in \mu_H \rrbracket = \min_{x \ge 10} \,\, \llbracket x \in \mu_H \rrbracket = \mu_H(10) = \frac{1}{3}&&
+	\end{flalign*}
+
+	\subsection*{c}
+	\begin{flalign*}
+		&\text{Min \& Max : } \quad \llbracket 5 \in \mu_L \,\, , \,\, 5 \in \mu_H \rrbracket = \min\{\frac{1}{2} \, , \, \frac{3}{4}\} = \frac{1}{2}&& \\
+		&\text{Łukasiewicz : } \quad \llbracket 5 \in \mu_L \,\, , \,\, 5 \in \mu_H \rrbracket = \max\{\frac{1}{2} + \frac{3}{4} - 1 \, , \, 0\} = \frac{1}{4}&&
+	\end{flalign*}
+
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 6}
+	\subsection*{a}
+	\begin{flalign*}
+		&\mu_2(x) = \begin{cases}
+			\frac{1}{6}x - \frac{1}{3} \qquad 2 \le x \le 8 \\
+			\frac{-1}{6}x + \frac{7}{3} \qquad 8 \le x \le 14 \\
+			0 \qquad\qquad\qquad \text{O.W.}
+		\end{cases} \qquad , \qquad \mu_3(x) = \begin{cases}
+			\frac{1}{6}x - \frac{4}{3} \qquad 8 \le x \le 14 \\
+			\quad 1 \qquad\qquad x \ge 14 \\
+			\quad 0 \qquad\qquad \text{O.W.}
+	\end{cases}&&\\\\
+	&\text{ Max t-conorm : } \mu_2 \cup_t \mu_{3} = \begin{cases}
+		\frac{1}{6}x - \frac{1}{3} \qquad 2 \le x \le 8 \\
+		\frac{-1}{6}x + \frac{7}{3} \qquad 8 \le x \le 11 \\
+		\frac{1}{6}x - \frac{4}{3} \qquad 11 \le x \le 14 \\
+		\quad 1 \qquad\qquad x \ge 14 \\
+	\end{cases}&&\\\\
+	&\text{ algebraic sum  t-conorm : } s(\alpha, \beta) = \alpha + \beta - \alpha\beta \quad \Rightarrow \quad \mu_2 \cup_t \mu_{3} = \begin{cases}
+		\frac{1}{6}x - \frac{1}{3} \qquad\qquad\qquad\qquad\qquad 2 \le x \le 8 \\
+		1 - \left(\frac{-1}{6}x + \frac{7}{3}\right)\left(\frac{1}{6}x - \frac{4}{3}\right) \qquad 8 \le x \le 14 \\
+		\quad 1 \qquad\qquad\qquad\qquad\qquad\qquad x \ge 14 \\
+	\end{cases}&&
+	\end{flalign*}
+	\pict{0.5}{F5}
+	
+	\subsection*{b}
+	\begin{flalign*}
+		&\mu_1 \,\, : \,\, \frac{1}{2}x = \alpha \Rightarrow x = 2\alpha \qquad , \qquad \frac{-1}{4}x + 2 = \alpha \Rightarrow 8 - 4 \alpha \qquad \Rightarrow \qquad [\mu_2]_\alpha = [2\alpha,8 - 4 \alpha]&&\\
+		&\mu_2 \,\, : \,\, \frac{1}{6}x - \frac{1}{3} = \alpha \Rightarrow x = 6\alpha + 2 \qquad , \qquad \frac{-1}{6}x + \frac{7}{3} = \alpha \Rightarrow 14 - 6 \alpha \qquad \Rightarrow \qquad [\mu_2]_\alpha = [6\alpha + 2, 14 - 6 \alpha]&&
+	\end{flalign*}
+	
+	\subsection*{c}
+	\begin{flalign*}
+		&-\frac{1}{4}x + 2 = \frac{1}{6}x - \frac{1}{3} \Rightarrow x = 5.6 \qquad \Rightarrow \qquad \mu_{1} \cap \mu_2 = \begin{cases}
+			\frac{1}{6}x - \frac{1}{3} \qquad\qquad 2 \le x \le 5.6 \\
+			2 - \frac{1}{4} x \qquad\qquad 5.6 \le x \le 8 \\
+			0 \qquad\qquad\qquad\qquad \text{O.W.}
+		\end{cases}&&
+	\end{flalign*}
+	
+	\subsection*{d}
+	\begin{flalign*}
+		&[\mu_{1} \cap \mu_2]_{\alpha} = [\mu_{1}]_{\alpha} \cap [\mu_2]_{\alpha} \xrightarrow{\alpha \in (0,1)} [\mu_{1} \cap \mu_2]_{\alpha} = [6\alpha + 2, 8 - 4\alpha]&&
+	\end{flalign*}
+
+	\subsection*{e}
+	\begin{flalign*}
+		&x = 6\alpha + 2 \Rightarrow \alpha = \frac{1}{6}x - \frac{1}{3} \qquad , \qquad x = 8-4\alpha \Rightarrow \alpha 2- \frac{1}{4}x \qquad , \qquad 0 < \alpha \le 0.6&&
+	\end{flalign*}
+	Normal intersection of these $\alpha$-cuts, is the $\alpha$-cut of the fuzzy intersection of the sets. This is only true for minimum t-norm.
+	
+		%-----------------------------------------------------------------------------------------------------------------	
+	\section{Question 7}
+	\subsection*{a}
+	Regarding the fact that the drastic sum is the biggest t-conorm and the max is the smallest one, the provided t-conorm must be included in this range.
+	\begin{flalign*}
+		&\text{Drastic sum : } s_d(\alpha, \beta) = \begin{cases}
+			1 \qquad\qquad\qquad\qquad 0 \notin \{\alpha, \beta\} \\
+			\max\{\alpha, \beta\}\qquad\qquad \text{O.W.}
+		\end{cases} \qquad , \qquad \text{Max : } s_m(\alpha, \beta) =\max{\alpha, \beta}&&\\\\
+		&s_d(0.2, 0.3) = 1 \qquad , \qquad s_m(0.2, 0.3) = 0.3 \qquad \Rightarrow \qquad s_m < s_{new} < s_d \qquad \checkmark&&
+	\end{flalign*}
+	Also we note that this new t-conorm must satisfy the $T_1, T_2, T_3, T'_4$ conditions.
+	
+	\subsection*{b}
+	\begin{flalign*}
+		s(\alpha, 0) = s(0, \alpha) = \alpha \qquad , \qquad \text{ if } \beta \le \gamma \Rightarrow s(\alpha, \beta) \le s(\alpha, \gamma)
+	\end{flalign*}
+	\pict{0.8}{F6}
+	\begin{flalign*}
+		&0.3 < A_1 < s_{new} (0.2, 1) \qquad , \qquad 0.4 < A_2 < 1 \qquad , \qquad s_{new}(0.3,0.3) < A_3 < 1 \qquad , \qquad 0.2 < A_4 < 0.4&&\\
+		&0.2 < A_5 < s_{new}(0.3,0.3) \qquad , \qquad 0.4 < A_6 < 1 \qquad , \qquad 0 < A_7 < 0.4 \qquad , \qquad 0.2 < A_8 < 0.4 \qquad , \qquad 0.3 < A_9 < 1 &&
+	\end{flalign*}
+	
+	\subsection*{c}
+	\begin{flalign*}
+		&t_{new} (\alpha, \beta) = 1 - s_{new} (1-\alpha, 1 - \beta) \quad \Rightarrow \quad t_{new} (0, \alpha) = 0 \quad , \quad t_{new}(0.7, 0.8) = 1 - s_{new}(0.3, 0.2) = 1 - 0.4 = 0.6&&\\
+		&t_{new}(0.8, 1) = 0.8 \quad , \quad t_{new}(0.7, 1) = 0.7 \quad , \quad t_{new}(\alpha, \beta) = t_{new}(\beta, \alpha)&&
+	\end{flalign*}
+	
+\end{document}
